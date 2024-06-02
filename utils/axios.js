@@ -48,6 +48,7 @@ export default function Axios() {
 
 	const http = axios.create({
 		// baseURL:"http://hotel.api",
+		baseURL:"http://localhost:8080",
 		headers: {
 			'Content-Type': 'application/json',
 			'X-Requested-With': 'XMLHttpRequest',
