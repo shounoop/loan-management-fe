@@ -1,59 +1,64 @@
 import axios from 'axios';
-import { useRouter } from 'next/router.js';
 import { useState } from 'react';
 
-export default function Axios() {
-	const router = useRouter();
-
-	//get token string
-	function getToken() {
+function useAxios() {
+	// Function to get token string from localStorage
+	const getToken = () => {
 		if (typeof window !== 'undefined') {
 			const tokenString = localStorage.getItem('token');
-			const userToken = JSON.parse(tokenString);
-			return userToken;
+			return tokenString ? JSON.parse(tokenString) : null;
 		}
-	}
+		return null;
+	};
 
-	//get user string
-	function getUser() {
+	// Function to get user string from localStorage
+	const getUser = () => {
 		if (typeof window !== 'undefined') {
 			const userString = localStorage.getItem('user');
-			const user_detail = JSON.parse(userString);
-			return user_detail;
+			return userString ? JSON.parse(userString) : null;
 		}
-	}
+		return null;
+	};
 
+	// Initialize state with values from localStorage
 	const [user, setUser] = useState(getUser());
 	const [token, setToken] = useState(getToken());
 
-	function saveToken(user, token) {
+	// Function to save token and user details to localStorage
+	const saveToken = (user, token) => {
 		if (typeof window !== 'undefined') {
-			// Perform localStorage action
-			const storeToken = localStorage.setItem('token', JSON.stringify(token));
-			const storeUser = localStorage.setItem('user', JSON.stringify(user));
+			localStorage.setItem('token', JSON.stringify(token));
+			localStorage.setItem('user', JSON.stringify(user));
 
-			setToken(storeToken);
-			setUser(storeUser);
-
-			// router.replace("/dashboard", "/dashboard");
-			router.replace('/dashboard');
-			router.reload();
+			setToken(token);
+			setUser(user);
 		}
-	}
+	};
 
-	function logout() {
-		localStorage.clear();
-		router.replace('/login', '/login');
-	}
+	// Function to clear localStorage (logout)
+	const logout = () => {
+		if (typeof window !== 'undefined') {
+			localStorage.clear();
+			setToken(null);
+			setUser(null);
+		}
+	};
 
+	// Axios instance with default configuration
 	const http = axios.create({
-		// baseURL:"http://hotel.api",
+		baseURL: process.env.NEXT_PUBLIC_API_URL,
 		headers: {
 			'Content-Type': 'application/json',
 			'X-Requested-With': 'XMLHttpRequest',
-			Authorization: `Bearer ${token}`,
+			Authorization: token ? `Bearer ${token}` : '',
 		},
+		withCredentials: true,
 	});
+
+	// Effect to update axios headers when token changes
+	// useEffect(() => {
+	// 	http.defaults.headers.Authorization = token ? `Bearer ${token}` : '';
+	// }, [token]);
 
 	return {
 		http,
@@ -64,3 +69,5 @@ export default function Axios() {
 		getToken,
 	};
 }
+
+export default useAxios;

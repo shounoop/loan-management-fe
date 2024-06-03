@@ -4,11 +4,12 @@ import UserContext from '../components/context/userContext';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Slide, ToastContainer } from 'react-toastify';
-import Login from './login';
-import Axios from '../utils/axios';
+import Login from '../components/Login';
+import useAxios from '../utils/axios';
+import '/styles/Home.module.css';
 
 const MyApp = ({ Component, pageProps }) => {
-	const { http, user, token, logout } = Axios();
+	const { user } = useAxios();
 
 	if (typeof window !== 'undefined') {
 		if (!user) {

@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from 'antd';
-
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import Axios from './../utils/axios';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import useAxios from '../utils/axios';
 import MyToast from '@mdrakibul8001/toastify';
 import { useRouter } from 'next/router';
 
@@ -11,37 +9,35 @@ const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
-export default function App() {
+const Login = () => {
 	const { notify } = MyToast();
+
 	const router = useRouter();
-	const { http, saveToken, user } = Axios();
 
-	const [email, setEmail] = useState('');
+	const { http, saveToken } = useAxios();
+
+	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-
-	useEffect(() => {
-		if (user) {
-			router.replace('/');
-		}
-	}, [user, router]);
 
 	const { token } = useToken();
 	const screens = useBreakpoint();
 
-	const onFinish = async (values) => {
-		console.log(`${process.env.NEXT_PUBLIC_DOMAIN}/login`, values);
+	const onFinish = async () => {
 		notify('info', 'Checking...!');
+
 		await http
-			.post(`${process.env.NEXT_PUBLIC_DOMAIN}/api/login`, { email, password })
+			.post(`/api/auth/login`, {
+				username,
+				password,
+			})
 			.then((res) => {
-				console.log(res.data.user);
-				const result = res.data?.user;
-				const user = {
-					id: result?.id,
-					name: result?.name,
-					email: result?.email,
-				};
-				saveToken(user, res.data.token);
+				const userHere = res.data;
+
+				saveToken(userHere, null);
+
+				console.log('Authorization', res.headers.get('Authorization'));
+				console.log('res', res);
+				// router.reload();
 			})
 			.catch((e) => {
 				const msg = e.response?.data;
@@ -54,16 +50,6 @@ export default function App() {
 					}
 				}
 			});
-
-		// remove these lines after api integration
-		saveToken(
-			{
-				id: 1,
-				name: 'Md Rakibul Islam',
-				email: 'fds@gmail.com',
-			},
-			'token'
-		);
 	};
 
 	const styles = {
@@ -92,9 +78,7 @@ export default function App() {
 			height: screens.sm ? '100vh' : 'auto',
 			padding: screens.md ? `${token.sizeXXL}px 0px` : '0px',
 		},
-		text: {
-			color: token.colorTextSecondary,
-		},
+		text: { color: token.colorTextSecondary },
 		title: {
 			fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
 		},
@@ -104,31 +88,6 @@ export default function App() {
 		<section style={styles.section}>
 			<div style={styles.container}>
 				<div style={styles.header}>
-					<svg
-						width="25"
-						height="24"
-						viewBox="0 0 25 24"
-						fill="none"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<rect x="0.464294" width="24" height="24" rx="4.8" fill="#1890FF" />
-
-						<path
-							d="M14.8643 3.6001H20.8643V9.6001H14.8643V3.6001Z"
-							fill="white"
-						/>
-
-						<path
-							d="M10.0643 9.6001H14.8643V14.4001H10.0643V9.6001Z"
-							fill="white"
-						/>
-
-						<path
-							d="M4.06427 13.2001H11.2643V20.4001H4.06427V13.2001Z"
-							fill="white"
-						/>
-					</svg>
-
 					<Title style={styles.title}>Sign in</Title>
 
 					<Text style={styles.text}>
@@ -139,14 +98,28 @@ export default function App() {
 
 				<Form
 					name="normal_login"
-					initialValues={{
-						remember: true,
-					}}
+					initialValues={{ remember: true }}
 					onFinish={onFinish}
 					layout="vertical"
 					requiredMark="optional"
 				>
 					<Form.Item
+						name="username"
+						rules={[
+							{
+								required: true,
+								message: 'Please input your username!',
+							},
+						]}
+					>
+						<Input
+							prefix={<UserOutlined />}
+							placeholder="Username"
+							onChange={(e) => setUsername(e.target.value)}
+						/>
+					</Form.Item>
+
+					{/* <Form.Item
 						name="email"
 						rules={[
 							{
@@ -161,16 +134,11 @@ export default function App() {
 							placeholder="Email"
 							onChange={(e) => setEmail(e.target.value)}
 						/>
-					</Form.Item>
+					</Form.Item> */}
 
 					<Form.Item
 						name="password"
-						rules={[
-							{
-								required: true,
-								message: 'Please input your Password!',
-							},
-						]}
+						rules={[{ required: true, message: 'Please input your Password!' }]}
 					>
 						<Input.Password
 							prefix={<LockOutlined />}
@@ -204,4 +172,6 @@ export default function App() {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Login;
