@@ -1,7 +1,24 @@
-import Head from 'next/head';
-
-import styles from '/styles/Home.module.css';
+import useAxios from './../utils/axios';
+import { Button } from 'antd';
 
 export default function Home() {
-	return <></>;
+	const { http } = useAxios();
+
+	const onClick = async () => {
+		try {
+			await http.get('/api/test/user');
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	return (
+		<div style={{ padding: 40 }}>
+			<h1>Home Page</h1>
+
+			<Button type="primary" onClick={onClick}>
+				Click me
+			</Button>
+		</div>
+	);
 }

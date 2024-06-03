@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import Axios from '../../utils/axios';
+import useAxios from '../utils/axios';
 import MyToast from '@mdrakibul8001/toastify';
 import { useRouter } from 'next/router';
 
@@ -9,12 +9,12 @@ const { useToken } = theme;
 const { useBreakpoint } = Grid;
 const { Text, Title, Link } = Typography;
 
-export default function App() {
+const Login = () => {
 	const { notify } = MyToast();
 
 	const router = useRouter();
 
-	const { http, saveToken, user } = Axios();
+	const { http, saveToken } = useAxios();
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -26,7 +26,7 @@ export default function App() {
 		notify('info', 'Checking...!');
 
 		await http
-			.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+			.post(`/api/auth/login`, {
 				username,
 				password,
 			})
@@ -35,7 +35,9 @@ export default function App() {
 
 				saveToken(userHere, null);
 
-				router.reload();
+				console.log('Authorization', res.headers.get('Authorization'));
+				console.log('res', res);
+				// router.reload();
 			})
 			.catch((e) => {
 				const msg = e.response?.data;
@@ -48,12 +50,6 @@ export default function App() {
 					}
 				}
 			});
-
-		// remove these lines after api integration
-		// saveToken(
-		// 	{ id: 1, name: 'Md Rakibul Islam', email: 'fds@gmail.com' },
-		// 	'token'
-		// );
 	};
 
 	const styles = {
@@ -176,4 +172,6 @@ export default function App() {
 			</div>
 		</section>
 	);
-}
+};
+
+export default Login;
