@@ -16,14 +16,17 @@ const Products = () => {
 	const {
 		token: { colorBgContainer },
 	} = theme.useToken();
+
 	const { Content } = Layout;
 	const { confirm } = Modal;
 
 	const { http } = Axios();
+
 	React.useEffect(() => {
 		const timeout = setTimeout(() => {
 			fetchItemList();
 		});
+
 		return () => clearTimeout(timeout);
 	}, []);
 
@@ -39,7 +42,7 @@ const Products = () => {
 			action: 'profitLoss',
 		};
 		await http
-			.get(`${process.env.NEXT_PUBLIC_DOMAIN}/api/list`)
+			.get(`${process.env.NEXT_PUBLIC_API_URL}/api/list`)
 			.then((res) => {
 				if (isSubscribed) {
 					console.log('profitLoss', res?.data);
@@ -94,7 +97,7 @@ const Products = () => {
 			async onOk() {
 				try {
 					await http.delete(
-						`${process.env.NEXT_PUBLIC_DOMAIN}/api/delete/${id}`
+						`${process.env.NEXT_PUBLIC_API_URL}/api/delete/${id}`
 					);
 					// After the delete request is successful, call fetchItemList
 					fetchItemList();
@@ -137,11 +140,13 @@ const Products = () => {
 
 	useEffect(() => {
 		let controller = new AbortController();
+
 		const result = data?.filter((item) => {
 			return item.name.toLowerCase().match(search.toLocaleLowerCase());
 		});
 
 		setProductList(result);
+
 		return () => controller.abort();
 	}, [search]);
 
@@ -173,6 +178,7 @@ const Products = () => {
 											<div>
 												<h4 className="card-title mb-0">All Products</h4>
 											</div>
+
 											<div className="ms-auto flex-shrink-0">
 												<Button
 													className="shadow rounded"
@@ -182,6 +188,7 @@ const Products = () => {
 													style={{ backgroundColor: '#007bff', color: '#fff' }}
 												>
 													<span>Add</span>
+
 													<span className="button-icon-space ml-5">
 														<FontAwesomeIcon icon={faPlusCircle} />
 													</span>
