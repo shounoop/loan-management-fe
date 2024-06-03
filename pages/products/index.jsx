@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Layout, Modal, Row, Table, Tag, theme } from 'antd';
+import { Button, Layout, Modal, Row, theme } from 'antd';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Axios from './../../utils/axios';
+import useAxios from './../../utils/axios';
 import {
 	DeleteOutlined,
 	EditOutlined,
@@ -20,7 +20,7 @@ const Products = () => {
 	const { Content } = Layout;
 	const { confirm } = Modal;
 
-	const { http } = Axios();
+	const { http } = useAxios();
 
 	React.useEffect(() => {
 		const timeout = setTimeout(() => {
@@ -42,7 +42,7 @@ const Products = () => {
 			action: 'profitLoss',
 		};
 		await http
-			.get(`${process.env.NEXT_PUBLIC_API_URL}/api/list`)
+			.get(`/api/list`)
 			.then((res) => {
 				if (isSubscribed) {
 					console.log('profitLoss', res?.data);
@@ -96,9 +96,7 @@ const Products = () => {
 			cancelText: 'No',
 			async onOk() {
 				try {
-					await http.delete(
-						`${process.env.NEXT_PUBLIC_API_URL}/api/delete/${id}`
-					);
+					await http.delete(`/api/delete/${id}`);
 					// After the delete request is successful, call fetchItemList
 					fetchItemList();
 				} catch (error) {

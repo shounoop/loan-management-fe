@@ -22,10 +22,10 @@ const CustomHeader = ({ collapsed, onToggleCollapse }) => {
 				display: 'flex',
 				alignItems: 'center',
 				justifyContent: 'space-between',
-				padding: '0 16px', // Add padding for better spacing
-				background: '#fff', // Set the background color to white
-				boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)', // Add a subtle box shadow
-				zIndex: 1, // Ensure the header is above other elements
+				padding: '0 16px',
+				background: '#fff',
+				boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+				zIndex: 1,
 			}}
 		>
 			<Space>
@@ -42,7 +42,7 @@ const CustomHeader = ({ collapsed, onToggleCollapse }) => {
 					type="text"
 					icon={<LogoutOutlined />}
 					onClick={async () => {
-						await onLogout(); // Call the onLogout function and wait for it to complete
+						await onLogout();
 					}}
 					style={{ fontSize: '16px', height: 64 }}
 				>

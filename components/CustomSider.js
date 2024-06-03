@@ -1,33 +1,23 @@
 import React from 'react';
 import { Menu } from 'antd';
-import {
-	GlobalOutlined,
-	DashboardOutlined,
-	MenuOutlined,
-	ContainerOutlined,
-	UsergroupAddOutlined,
-	AuditOutlined,
-	UserOutlined,
-	SettingOutlined,
-} from '@ant-design/icons';
+import { GlobalOutlined, MenuOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
-const CustomSider = ({ collapsed, onToggleCollapse }) => {
+const CustomSider = () => {
 	const router = useRouter();
 
 	const menuItems = [
 		{
-			key: 'profile',
+			key: 'home',
 			icon: <GlobalOutlined />,
-			label: 'Profile',
-			path: '/profile',
+			label: 'Home',
+			path: '/',
 		},
-
 		{
-			key: 'masterdata',
 			icon: <MenuOutlined />,
-			label: 'Master Data',
-			children: [{ key: 'products', label: 'Products', path: '/products' }],
+			key: 'products',
+			label: 'Products',
+			path: '/products',
 		},
 	];
 
@@ -59,7 +49,7 @@ const CustomSider = ({ collapsed, onToggleCollapse }) => {
 		<div>
 			<div className="demo-logo-vertical" />
 
-			<Menu theme="dark" defaultSelectedKeys={['profile']} mode="inline">
+			<Menu theme="light" defaultSelectedKeys={['home']} mode="inline">
 				{menuItems.map((item) => renderMenuItem(item))}
 			</Menu>
 		</div>
