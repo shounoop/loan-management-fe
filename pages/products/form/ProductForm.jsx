@@ -43,13 +43,13 @@ const ProductForm = (props) => {
         // setLoading(true);
 
         if (setEditData?.id) {
-            http.put(`${process.env.NEXT_PUBLIC_DOMAIN}/api/updateproduct/${setEditData?.id}`, values);
+            http.put(`${process.env.NEXT_PUBLIC_API_URL}/api/updateproduct/${setEditData?.id}`, values);
             isParentRender(true);
               setIsModalOpen(false);
 
           } else {
 
-              http.post(`${process.env.NEXT_PUBLIC_DOMAIN}/api/addProduct`, values);
+              http.post(`${process.env.NEXT_PUBLIC_API_URL}/api/addProduct`, values);
               isParentRender(true);
               setIsModalOpen(false);
           }

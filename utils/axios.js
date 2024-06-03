@@ -1,11 +1,8 @@
 import axios from 'axios';
-import { useRouter } from 'next/router.js';
 import { useState } from 'react';
 
 export default function Axios() {
-	const router = useRouter();
-
-	//get token string
+	// get token string
 	function getToken() {
 		if (typeof window !== 'undefined') {
 			const tokenString = localStorage.getItem('token');
@@ -14,7 +11,7 @@ export default function Axios() {
 		}
 	}
 
-	//get user string
+	// get user string
 	function getUser() {
 		if (typeof window !== 'undefined') {
 			const userString = localStorage.getItem('user');
@@ -28,27 +25,20 @@ export default function Axios() {
 
 	function saveToken(user, token) {
 		if (typeof window !== 'undefined') {
-			// Perform localStorage action
 			const storeToken = localStorage.setItem('token', JSON.stringify(token));
 			const storeUser = localStorage.setItem('user', JSON.stringify(user));
 
 			setToken(storeToken);
 			setUser(storeUser);
-
-			// router.replace("/dashboard", "/dashboard");
-			router.replace('/dashboard');
-			router.reload();
 		}
 	}
 
 	function logout() {
 		localStorage.clear();
-		router.replace('/login', '/login');
 	}
 
 	const http = axios.create({
-		// baseURL:"http://hotel.api",
-		baseURL:"http://localhost:8080",
+		baseURL: 'http://localhost:8080',
 		headers: {
 			'Content-Type': 'application/json',
 			'X-Requested-With': 'XMLHttpRequest',

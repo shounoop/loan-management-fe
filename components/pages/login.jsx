@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useState } from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from 'antd';
-
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import Axios from '../utils/axios';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import Axios from '../../utils/axios';
 import MyToast from '@mdrakibul8001/toastify';
 import { useRouter } from 'next/router';
 
@@ -13,39 +11,31 @@ const { Text, Title, Link } = Typography;
 
 export default function App() {
 	const { notify } = MyToast();
+
 	const router = useRouter();
+
 	const { http, saveToken, user } = Axios();
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
-	useEffect(() => {
-		if (user) {
-			router.replace('/');
-		}
-	}, [user, router]);
-
 	const { token } = useToken();
 	const screens = useBreakpoint();
 
-	const onFinish = async (values) => {
+	const onFinish = async () => {
 		notify('info', 'Checking...!');
 
 		await http
-			.post(`${process.env.NEXT_PUBLIC_DOMAIN}/api/auth/login`, {
+			.post(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
 				username,
 				password,
 			})
 			.then((res) => {
-				console.log({ res });
+				const userHere = res.data;
 
-				// const result = res.data?.user;
-				// const user = {
-				// 	id: result?.id,
-				// 	name: result?.name,
-				// 	email: result?.email,
-				// };
-				// saveToken(user, res.data.token);
+				saveToken(userHere, null);
+
+				router.reload();
 			})
 			.catch((e) => {
 				const msg = e.response?.data;
@@ -127,7 +117,7 @@ export default function App() {
 						]}
 					>
 						<Input
-							prefix={<MailOutlined />}
+							prefix={<UserOutlined />}
 							placeholder="Username"
 							onChange={(e) => setUsername(e.target.value)}
 						/>
