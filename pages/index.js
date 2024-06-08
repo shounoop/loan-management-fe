@@ -6,7 +6,9 @@ export default function Home() {
 
 	const onClick = async () => {
 		try {
-			await http.get('/api/test/user');
+			const res = await http.get('/api/test/user');
+
+			console.log('res', res);
 		} catch (error) {
 			console.error(error);
 		}

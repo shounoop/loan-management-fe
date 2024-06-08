@@ -1,6 +1,6 @@
 import MainLayout from '../components/MainLayout';
 import '../styles/globals.css';
-import UserContext from '../components/context/userContext';
+import UserContext from '../context/userContext';
 import 'react-toastify/dist/ReactToastify.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Slide, ToastContainer } from 'react-toastify';

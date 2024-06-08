@@ -38,9 +38,7 @@ const Products = () => {
 
 	const fetchItemList = async () => {
 		let isSubscribed = true;
-		let formData = {
-			action: 'profitLoss',
-		};
+
 		await http
 			.get(`/api/list`)
 			.then((res) => {
@@ -146,7 +144,7 @@ const Products = () => {
 		setProductList(result);
 
 		return () => controller.abort();
-	}, [search]);
+	}, [search, data]);
 
 	// product added
 

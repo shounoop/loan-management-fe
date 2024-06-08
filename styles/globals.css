@@ -1,10 +1,10 @@
 /* @import '~antd/dist/antd.less'; */
 /* index.css or your global styles file */
-body, html {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  /* Add other global styles as needed */
-  
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Add other global styles as needed */
