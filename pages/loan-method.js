@@ -1,3 +1,3 @@
-import LoanMethod from '@/modules/LoanMethod';
+import LoanMethodPage from '@/modules/LoanMethodPage';
 
-export default LoanMethod;
+export default LoanMethodPage;
