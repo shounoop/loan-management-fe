@@ -1,5 +1,9 @@
 const LoanTypePage = () => {
-	return <div>LoanTypePage</div>;
+	return (
+		<div className='wrapper'>
+			<div>LoanTypePage</div>
+		</div>
+	);
 };
 
 export default LoanTypePage;
