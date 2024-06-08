@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Form, Grid, Input, theme, Typography } from 'antd';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import useAxios from '../utils/axios';
 import MyToast from '@mdrakibul8001/toastify';
 import { useRouter } from 'next/router';
+import { getCookie } from '../utils/cookie-storage';
 
 const { useToken } = theme;
 const { useBreakpoint } = Grid;
@@ -19,25 +20,23 @@ const Login = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
-	const { token } = useToken();
+	const { token: themeToken } = useToken();
 	const screens = useBreakpoint();
 
 	const onFinish = async () => {
 		notify('info', 'Checking...!');
 
 		await http
-			.post(`/api/auth/login`, {
-				username,
-				password,
-			})
+			.post(`/api/auth/login`, { username, password })
 			.then((res) => {
 				const userHere = res.data;
 
-				saveToken(userHere, null);
+				// to get token from cookie --> set httpOnly: false in backend
+				// jwtToken is empty string if httpOnly: true
+				const jwtToken = getCookie(process.env.NEXT_PUBLIC_JWT_COOKIE_NAME);
 
-				console.log('Authorization', res.headers.get('Authorization'));
-				console.log('res', res);
-				// router.reload();
+				saveToken(userHere, jwtToken);
+				router.reload();
 			})
 			.catch((e) => {
 				const msg = e.response?.data;
@@ -56,12 +55,12 @@ const Login = () => {
 		container: {
 			margin: '0 auto',
 			padding: screens.md
-				? `${token.paddingXL}px`
-				: `${token.sizeXXL}px ${token.padding}px`,
+				? `${themeToken.paddingXL}px`
+				: `${themeToken.sizeXXL}px ${themeToken.padding}px`,
 			width: '380px',
 		},
 		footer: {
-			marginTop: token.marginLG,
+			marginTop: themeToken.marginLG,
 			textAlign: 'center',
 			width: '100%',
 		},
@@ -69,18 +68,20 @@ const Login = () => {
 			float: 'right',
 		},
 		header: {
-			marginBottom: token.marginXL,
+			marginBottom: themeToken.marginXL,
 		},
 		section: {
 			alignItems: 'center',
-			backgroundColor: token.colorBgContainer,
+			backgroundColor: themeToken.colorBgContainer,
 			display: 'flex',
 			height: screens.sm ? '100vh' : 'auto',
-			padding: screens.md ? `${token.sizeXXL}px 0px` : '0px',
+			padding: screens.md ? `${themeToken.sizeXXL}px 0px` : '0px',
 		},
-		text: { color: token.colorTextSecondary },
+		text: { color: themeToken.colorTextSecondary },
 		title: {
-			fontSize: screens.md ? token.fontSizeHeading2 : token.fontSizeHeading3,
+			fontSize: screens.md
+				? themeToken.fontSizeHeading2
+				: themeToken.fontSizeHeading3,
 		},
 	};
 

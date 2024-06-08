@@ -50,15 +50,10 @@ function useAxios() {
 		headers: {
 			'Content-Type': 'application/json',
 			'X-Requested-With': 'XMLHttpRequest',
-			Authorization: token ? `Bearer ${token}` : '',
+			// Authorization: token ? `Bearer ${token}` : '',
 		},
 		withCredentials: true,
 	});
-
-	// Effect to update axios headers when token changes
-	// useEffect(() => {
-	// 	http.defaults.headers.Authorization = token ? `Bearer ${token}` : '';
-	// }, [token]);
 
 	return {
 		http,
