@@ -31,7 +31,10 @@
     "uninstall": "^0.0.0"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^14.2.3",
     "eslint": "8.40.0",
-    "eslint-config-next": "13.4.2"
+    "eslint-config-next": "13.4.2",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3"
   }
 }
