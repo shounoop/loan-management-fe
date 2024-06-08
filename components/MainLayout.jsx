@@ -15,6 +15,7 @@ const MainLayout = ({ children }) => {
 				trigger={null}
 				collapsible
 				collapsed={collapsed}
+				// width={'auto'}
 				width={200}
 				theme="light"
 			>
