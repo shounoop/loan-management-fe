@@ -1,7 +1,11 @@
 {
 	"compilerOptions": {
+		"allowJs": true,
+		"baseUrl": ".", // this is to resolve the path from the root directory
 		"paths": {
 			"@/*": ["./*"]
 		}
-	}
+	},
+	"include": ["**/*.js", "**/*.jsx"],
+	"exclude": ["node_modules"]
 }
