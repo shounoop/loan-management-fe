@@ -7,33 +7,33 @@ import Footer from './Footer';
 const { Sider, Content } = Layout;
 
 const MainLayout = ({ children }) => {
-	const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
-	return (
-		<Layout style={{ minHeight: '100vh' }}>
-			<Sider
-				trigger={null}
-				collapsible
-				collapsed={collapsed}
-				// width={'auto'}
-				width={200}
-				theme="light"
-			>
-				<CustomSider />
-			</Sider>
+  return (
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        // width={'auto'}
+        width={200}
+        theme="light"
+      >
+        <CustomSider />
+      </Sider>
 
-			<Layout>
-				<CustomHeader
-					collapsed={collapsed}
-					onToggleCollapse={() => setCollapsed(!collapsed)}
-				/>
+      <Layout>
+        <CustomHeader
+          collapsed={collapsed}
+          onToggleCollapse={() => setCollapsed(!collapsed)}
+        />
 
-				<Content>{children}</Content>
+        <Content style={{ padding: 24 }}>{children}</Content>
 
-				<Footer />
-			</Layout>
-		</Layout>
-	);
+        <Footer />
+      </Layout>
+    </Layout>
+  );
 };
 
 export default MainLayout;
