@@ -1,17 +1,26 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
 
-const ModalLoanMethodCreate = (props) => {
+const ModalLoanMethodCreateEdit = (props) => {
   const {
-    isOpenModalCreate,
-    handleOkModalCreate,
-    isCreating,
-    handleCancelModalCreate,
+    initialValues = {},
+    isOpenModalCreateEdit,
+    handleOkModalCreateEdit,
+    isSpinningModalCreateEdit,
+    handleCancelModalCreateEdit,
   } = props;
+
+  const isEditModal = !!initialValues.loan_method_id;
 
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
-    handleOkModalCreate(values);
+    const payload = {
+      loan_method_name: values.loan_method_name,
+      loan_method_desc: values.loan_method_desc,
+      loan_method_id: initialValues.loan_method_id,
+    };
+
+    handleOkModalCreateEdit(payload);
   };
 
   const formProps = {
@@ -25,14 +34,15 @@ const ModalLoanMethodCreate = (props) => {
 
   return (
     <Modal
-      title="Tạo Phương Thức Vay"
-      open={isOpenModalCreate}
-      onOk={handleOkModalCreate}
-      isCreating={isCreating}
-      onCancel={handleCancelModalCreate}
+      title={`${isEditModal ? 'Chỉnh Sửa' : 'Tạo'} Phương Thức Vay`}
+      open={isOpenModalCreateEdit}
+      onOk={handleOkModalCreateEdit}
+      isSpinningModalCreateEdit={isSpinningModalCreateEdit}
+      onCancel={handleCancelModalCreateEdit}
       footer={null}
     >
       <Form
+        initialValues={initialValues}
         className="mt-3"
         {...formProps}
         form={form}
@@ -70,12 +80,16 @@ const ModalLoanMethodCreate = (props) => {
         <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
           <Row justify="end" gutter={8}>
             <Col>
-              <Button onClick={handleCancelModalCreate}>Hủy</Button>
+              <Button onClick={handleCancelModalCreateEdit}>Hủy</Button>
             </Col>
 
             <Col>
-              <Button type="primary" htmlType="submit" loading={isCreating}>
-                Tạo
+              <Button
+                type="primary"
+                htmlType="submit"
+                loading={isSpinningModalCreateEdit}
+              >
+                {isEditModal ? 'Sửa' : 'Tạo'}
               </Button>
             </Col>
           </Row>
@@ -85,4 +99,4 @@ const ModalLoanMethodCreate = (props) => {
   );
 };
 
-export default ModalLoanMethodCreate;
+export default ModalLoanMethodCreateEdit;

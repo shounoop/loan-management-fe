@@ -3,19 +3,20 @@ import styles from './Index.module.scss';
 import { Button, Col, Input, Row, Table, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
-import ModalLoanMethodCreate from './ModalLoanMethodCreate';
-import { useRouter } from 'next/router';
+import ModalLoanMethodCreateEdit from './ModalLoanMethodCreateEdit';
 
 const { Search } = Input;
 
 const LoanMethodsPage = () => {
   const { http } = useAxios();
 
-  const [isOpenModalCreate, setIsOpenModalCreate] = useState(false);
-  const [isCreating, setIsCreating] = useState(false);
+  const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
+  const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
+    useState(false);
   const [open, setOpen] = useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
   const [loanMethods, setLoanMethods] = useState([]);
+  const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
     getList();
@@ -34,7 +35,9 @@ const LoanMethodsPage = () => {
   };
 
   const openModalCreate = () => {
-    setIsOpenModalCreate(true);
+    setIsOpenModalCreateEdit(true);
+
+    setInitialValues({});
   };
 
   const getList = async () => {
@@ -54,31 +57,43 @@ const LoanMethodsPage = () => {
     }
   };
 
-  const handleOkModalCreate = async (payload) => {
+  const handleOkModalCreateEdit = async (payload) => {
     try {
-      setIsCreating(true);
+      setIsSpinningModalCreateEdit(true);
 
-      await http.post('/api/express/loan-method', payload);
+      if (payload.loan_method_id) {
+        await http.put('/api/express/loan-method', payload);
+      } else {
+        await http.post('/api/express/loan-method', payload);
+      }
 
       // Refresh data
       getList();
 
-      setIsOpenModalCreate(false);
+      setIsOpenModalCreateEdit(false);
     } catch (error) {
       console.log(error);
     } finally {
-      setIsCreating(false);
+      setIsSpinningModalCreateEdit(false);
     }
   };
 
-  const handleCancelModalCreate = () => {
-    console.log('Clicked cancel button');
-
-    setIsOpenModalCreate(false);
+  const handleCancelModalCreateEdit = () => {
+    setIsOpenModalCreateEdit(false);
   };
 
   const onSearch = (value, _e, info) => {
     console.log(info?.source, value);
+  };
+
+  const onClickEdit = (record) => {
+    setInitialValues({
+      loan_method_id: record.loan_method_id,
+      loan_method_name: record.loan_method_name,
+      loan_method_desc: record.loan_method_desc,
+    });
+
+    setIsOpenModalCreateEdit(true);
   };
 
   const columns = [
@@ -101,12 +116,7 @@ const LoanMethodsPage = () => {
       render: (_, record) => (
         <Row align="middle" gutter={8}>
           <Col>
-            <Button
-              type="default"
-              onClick={() => {
-                console.log('Edit button clicked', record);
-              }}
-            >
+            <Button type="default" onClick={() => onClickEdit(record)}>
               Sửa
             </Button>
           </Col>
@@ -155,12 +165,13 @@ const LoanMethodsPage = () => {
       </div>
 
       <>
-        {isOpenModalCreate && (
-          <ModalLoanMethodCreate
-            isOpenModalCreate={isOpenModalCreate}
-            handleOkModalCreate={handleOkModalCreate}
-            isCreating={isCreating}
-            handleCancelModalCreate={handleCancelModalCreate}
+        {isOpenModalCreateEdit && (
+          <ModalLoanMethodCreateEdit
+            initialValues={initialValues}
+            isOpenModalCreateEdit={isOpenModalCreateEdit}
+            handleOkModalCreateEdit={handleOkModalCreateEdit}
+            isSpinningModalCreateEdit={isSpinningModalCreateEdit}
+            handleCancelModalCreateEdit={handleCancelModalCreateEdit}
           />
         )}
 
