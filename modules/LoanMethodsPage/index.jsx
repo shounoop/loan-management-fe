@@ -3,36 +3,23 @@ import styles from './Index.module.scss';
 import { Button, Col, Input, Row, Table, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
+import ModalLoanMethodCreateEdit from './ModalLoanMethodCreateEdit';
 
 const { Search } = Input;
 
 const LoanMethodsPage = () => {
   const { http } = useAxios();
 
-  const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
+  const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
+    useState(false);
   const [open, setOpen] = useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
-
   const [loanMethods, setLoanMethods] = useState([]);
+  const [initialValues, setInitialValues] = useState({});
 
   useEffect(() => {
-    (async () => {
-      try {
-        setIsGettingList(true);
-        const res = await http.get('/api/express/loan-methods');
-
-        const data = res?.data?.infor?.data;
-
-        if (data) {
-          setLoanMethods(data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsGettingList(false);
-      }
-    })();
+    getList();
   }, []);
 
   const openModalDelete = () => {
@@ -47,27 +34,66 @@ const LoanMethodsPage = () => {
     setOpen(false);
   };
 
-  const openModalAdd = () => {
-    setIsOpenModalAdd(true);
+  const openModalCreate = () => {
+    setIsOpenModalCreateEdit(true);
+
+    setInitialValues({});
   };
 
-  const handleOkModalAdd = () => {
-    setIsAdding(true);
+  const getList = async () => {
+    try {
+      setIsGettingList(true);
+      const res = await http.get('/api/express/loan-methods');
 
-    setTimeout(() => {
-      setIsOpenModalAdd(false);
-      setIsAdding(false);
-    }, 2000);
+      const data = res?.data?.infor?.data;
+
+      if (data) {
+        setLoanMethods(data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsGettingList(false);
+    }
   };
 
-  const handleCancelModalAdd = () => {
-    console.log('Clicked cancel button');
+  const handleOkModalCreateEdit = async (payload) => {
+    try {
+      setIsSpinningModalCreateEdit(true);
 
-    setIsOpenModalAdd(false);
+      if (payload.loan_method_id) {
+        await http.put('/api/express/loan-method', payload);
+      } else {
+        await http.post('/api/express/loan-method', payload);
+      }
+
+      // Refresh data
+      getList();
+
+      setIsOpenModalCreateEdit(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsSpinningModalCreateEdit(false);
+    }
+  };
+
+  const handleCancelModalCreateEdit = () => {
+    setIsOpenModalCreateEdit(false);
   };
 
   const onSearch = (value, _e, info) => {
     console.log(info?.source, value);
+  };
+
+  const onClickEdit = (record) => {
+    setInitialValues({
+      loan_method_id: record.loan_method_id,
+      loan_method_name: record.loan_method_name,
+      loan_method_desc: record.loan_method_desc,
+    });
+
+    setIsOpenModalCreateEdit(true);
   };
 
   const columns = [
@@ -90,12 +116,7 @@ const LoanMethodsPage = () => {
       render: (_, record) => (
         <Row align="middle" gutter={8}>
           <Col>
-            <Button
-              type="default"
-              onClick={() => {
-                console.log('Edit button clicked', record);
-              }}
-            >
+            <Button type="default" onClick={() => onClickEdit(record)}>
               Sửa
             </Button>
           </Col>
@@ -120,7 +141,7 @@ const LoanMethodsPage = () => {
     <div className={styles.wrapper}>
       <HeadingWrapper
         title="Quản lý phương thức vay"
-        onClickAddNew={openModalAdd}
+        onClickCreate={openModalCreate}
       />
 
       <Row justify="end" className={styles.search_wrapper}>
@@ -144,15 +165,15 @@ const LoanMethodsPage = () => {
       </div>
 
       <>
-        <Modal
-          title="Create New Loan Method"
-          open={isOpenModalAdd}
-          onOk={handleOkModalAdd}
-          isAdding={isAdding}
-          onCancel={handleCancelModalAdd}
-        >
-          <p>Content</p>
-        </Modal>
+        {isOpenModalCreateEdit && (
+          <ModalLoanMethodCreateEdit
+            initialValues={initialValues}
+            isOpenModalCreateEdit={isOpenModalCreateEdit}
+            handleOkModalCreateEdit={handleOkModalCreateEdit}
+            isSpinningModalCreateEdit={isSpinningModalCreateEdit}
+            handleCancelModalCreateEdit={handleCancelModalCreateEdit}
+          />
+        )}
 
         <Modal
           open={open}
