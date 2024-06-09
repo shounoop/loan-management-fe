@@ -9,46 +9,46 @@ import useAxios from '../utils/axios';
 import '/styles/Home.module.css';
 
 const MyApp = ({ Component, pageProps }) => {
-	const { user } = useAxios();
+  const { user } = useAxios();
 
-	if (typeof window !== 'undefined') {
-		if (!user) {
-			return (
-				<>
-					<Login />
+  if (typeof window !== 'undefined') {
+    if (!user) {
+      return (
+        <>
+          <Login />
 
-					<ToastContainer
-						position="top-right"
-						autoClose={3000}
-						hideProgressBar={false}
-						newestOnTop={false}
-						draggable={false}
-						closeOnClick
-						pauseOnHover
-						transition={Slide}
-					/>
-				</>
-			);
-		}
-	}
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            draggable={false}
+            closeOnClick
+            pauseOnHover
+            transition={Slide}
+          />
+        </>
+      );
+    }
+  }
 
-	return (
-		<UserContext.Provider>
-			<MainLayout>
-				<Component {...pageProps} />
+  return (
+    <UserContext.Provider>
+      <MainLayout>
+        <Component {...pageProps} />
 
-				<ToastContainer
-					position="top-right"
-					autoClose={3000}
-					hideProgressBar={false}
-					newestOnTop={false}
-					draggable={false}
-					closeOnClick
-					pauseOnHover
-					transition={Slide}
-				/>
-			</MainLayout>
-		</UserContext.Provider>
-	);
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          draggable={false}
+          closeOnClick
+          pauseOnHover
+          transition={Slide}
+        />
+      </MainLayout>
+    </UserContext.Provider>
+  );
 };
 export default MyApp;

@@ -17,7 +17,7 @@ const DashboardPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Dashboard Page</h1>
+      <h1>Trang chủ</h1>
 
       <Button type="primary" onClick={onClick}>
         Click me to test the API
