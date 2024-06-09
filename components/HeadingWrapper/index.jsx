@@ -2,7 +2,7 @@ import { Row, Col, Button } from 'antd';
 import styles from './Index.module.scss';
 
 const HeadingWrapper = (props) => {
-  const { title, onClickAddNew } = props;
+  const { title, onClickCreate } = props;
 
   return (
     <div className={styles.wrapper}>
@@ -10,7 +10,7 @@ const HeadingWrapper = (props) => {
         <Col className={styles.heading_title}>{title}</Col>
 
         <Col>
-          <Button type="primary" size="middle" onClick={onClickAddNew}>
+          <Button type="primary" size="middle" onClick={onClickCreate}>
             Thêm mới
           </Button>
         </Col>
