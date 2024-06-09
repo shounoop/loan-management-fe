@@ -1,21 +1,48 @@
 import HeadingWrapper from '@/components/HeadingWrapper';
 import styles from './Index.module.scss';
 import { Button, Col, Input, Row, Table, Modal } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import useAxios from '@/utils/axios';
 
 const { Search } = Input;
 
 const LoanMethodsPage = () => {
+  const { http } = useAxios();
+
   const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isGettingList, setIsGettingList] = useState(false);
+
+  const [loanMethods, setLoanMethods] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setIsGettingList(true);
+        const res = await http.get('/api/express/loan-methods');
+
+        const data = res?.data?.infor?.data;
+
+        if (data) {
+          setLoanMethods(data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsGettingList(false);
+      }
+    })();
+  }, []);
 
   const openModalDelete = () => {
     setOpen(true);
   };
+
   const handleOkModalDelete = () => {
     setOpen(false);
   };
+
   const handleCancelModalDelete = () => {
     setOpen(false);
   };
@@ -43,33 +70,18 @@ const LoanMethodsPage = () => {
     console.log(info?.source, value);
   };
 
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-  ];
-
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: 'ID',
+      dataIndex: 'loan_method_id',
     },
     {
-      title: 'Age',
-      dataIndex: 'age',
+      title: 'Phương thức vay',
+      dataIndex: 'loan_method_name',
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
+      title: 'Mô tả',
+      dataIndex: 'loan_method_desc',
     },
     {
       title: 'Actions',
@@ -123,7 +135,12 @@ const LoanMethodsPage = () => {
       </Row>
 
       <div className={styles.table_wrapper}>
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table
+          dataSource={loanMethods}
+          columns={columns}
+          loading={isGettingList}
+          pagination={false}
+        />
       </div>
 
       <>
