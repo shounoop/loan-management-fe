@@ -84,7 +84,7 @@ const LoanMethodsPage = () => {
                 console.log('Edit button clicked', record);
               }}
             >
-              Edit
+              Sửa
             </Button>
           </Col>
 
@@ -96,7 +96,7 @@ const LoanMethodsPage = () => {
                 console.log('Delete button clicked', record);
               }}
             >
-              Delete
+              Xóa
             </Button>
           </Col>
         </Row>
@@ -107,13 +107,13 @@ const LoanMethodsPage = () => {
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
-        title="Loan Methods Management"
+        title="Quản lý phương thức vay"
         onClickAddNew={openModalAdd}
       />
 
       <Row justify="end" className={styles.search_wrapper}>
         <Search
-          placeholder="input search text"
+          placeholder="Nhập từ khóa tìm kiếm..."
           onSearch={onSearch}
           size="middle"
           bordered
@@ -142,12 +142,12 @@ const LoanMethodsPage = () => {
           title="Confirm Delete"
           onOk={handleOkModalDelete}
           onCancel={handleCancelModalDelete}
-          footer={(_, { CancelBtn }) => (
+          footer={() => (
             <>
-              <CancelBtn />
+              <Button>Hủy</Button>
 
               <Button type="primary" danger>
-                Delete
+                Xóa
               </Button>
             </>
           )}

@@ -11,7 +11,7 @@ const HeadingWrapper = (props) => {
 
         <Col>
           <Button type="primary" size="middle" onClick={onClickAddNew}>
-            Add new
+            Thêm mới
           </Button>
         </Col>
       </Row>

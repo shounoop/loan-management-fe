@@ -20,37 +20,37 @@ const CustomSider = () => {
     {
       key: MenuKeys.DASHBOARD,
       icon: <GlobalOutlined />,
-      label: 'Dashboard',
+      label: 'Trang Chủ',
       path: '/',
     },
     {
       key: MenuKeys.LOAN_METHODS,
       icon: <GlobalOutlined />,
-      label: 'Loan Methods',
+      label: 'Phương Thức Vay',
       path: '/loan-methods',
     },
     {
       key: MenuKeys.LOAN_TYPES,
       icon: <GlobalOutlined />,
-      label: 'Loan Types',
+      label: 'Kiểu Vay',
       path: '/loan-types',
     },
     {
       key: MenuKeys.LOAN_APPLICATIONS,
       icon: <GlobalOutlined />,
-      label: 'Loan Applications',
+      label: 'Đơn Vay',
       path: '/loan-applications',
     },
     {
       key: MenuKeys.LOAN_PRODUCTS,
       icon: <GlobalOutlined />,
-      label: 'Loan Products',
+      label: 'Sản Phẩm Vay',
       path: '/loan-products',
     },
     {
       key: MenuKeys.CUSTOMERS,
       icon: <GlobalOutlined />,
-      label: 'Customer',
+      label: 'Khách Hàng',
       path: '/customers',
     },
     {
