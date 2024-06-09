@@ -3,36 +3,22 @@ import styles from './Index.module.scss';
 import { Button, Col, Input, Row, Table, Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
+import ModalLoanMethodCreate from './ModalLoanMethodCreate';
+import { useRouter } from 'next/router';
 
 const { Search } = Input;
 
 const LoanMethodsPage = () => {
   const { http } = useAxios();
 
-  const [isOpenModalAdd, setIsOpenModalAdd] = useState(false);
-  const [isAdding, setIsAdding] = useState(false);
+  const [isOpenModalCreate, setIsOpenModalCreate] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [open, setOpen] = useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
-
   const [loanMethods, setLoanMethods] = useState([]);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setIsGettingList(true);
-        const res = await http.get('/api/express/loan-methods');
-
-        const data = res?.data?.infor?.data;
-
-        if (data) {
-          setLoanMethods(data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsGettingList(false);
-      }
-    })();
+    getList();
   }, []);
 
   const openModalDelete = () => {
@@ -47,23 +33,48 @@ const LoanMethodsPage = () => {
     setOpen(false);
   };
 
-  const openModalAdd = () => {
-    setIsOpenModalAdd(true);
+  const openModalCreate = () => {
+    setIsOpenModalCreate(true);
   };
 
-  const handleOkModalAdd = () => {
-    setIsAdding(true);
+  const getList = async () => {
+    try {
+      setIsGettingList(true);
+      const res = await http.get('/api/express/loan-methods');
 
-    setTimeout(() => {
-      setIsOpenModalAdd(false);
-      setIsAdding(false);
-    }, 2000);
+      const data = res?.data?.infor?.data;
+
+      if (data) {
+        setLoanMethods(data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsGettingList(false);
+    }
   };
 
-  const handleCancelModalAdd = () => {
+  const handleOkModalCreate = async (payload) => {
+    try {
+      setIsCreating(true);
+
+      await http.post('/api/express/loan-method', payload);
+
+      // Refresh data
+      getList();
+
+      setIsOpenModalCreate(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleCancelModalCreate = () => {
     console.log('Clicked cancel button');
 
-    setIsOpenModalAdd(false);
+    setIsOpenModalCreate(false);
   };
 
   const onSearch = (value, _e, info) => {
@@ -120,7 +131,7 @@ const LoanMethodsPage = () => {
     <div className={styles.wrapper}>
       <HeadingWrapper
         title="Quản lý phương thức vay"
-        onClickAddNew={openModalAdd}
+        onClickCreate={openModalCreate}
       />
 
       <Row justify="end" className={styles.search_wrapper}>
@@ -144,15 +155,14 @@ const LoanMethodsPage = () => {
       </div>
 
       <>
-        <Modal
-          title="Create New Loan Method"
-          open={isOpenModalAdd}
-          onOk={handleOkModalAdd}
-          isAdding={isAdding}
-          onCancel={handleCancelModalAdd}
-        >
-          <p>Content</p>
-        </Modal>
+        {isOpenModalCreate && (
+          <ModalLoanMethodCreate
+            isOpenModalCreate={isOpenModalCreate}
+            handleOkModalCreate={handleOkModalCreate}
+            isCreating={isCreating}
+            handleCancelModalCreate={handleCancelModalCreate}
+          />
+        )}
 
         <Modal
           open={open}
