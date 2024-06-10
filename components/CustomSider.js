@@ -32,7 +32,7 @@ const CustomSider = () => {
     {
       key: MenuKeys.LOAN_TYPES,
       icon: <GlobalOutlined />,
-      label: 'Kiểu Vay',
+      label: 'Mục Đích Vay',
       path: '/loan-types',
     },
     {
