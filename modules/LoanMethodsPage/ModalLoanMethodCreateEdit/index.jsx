@@ -37,7 +37,6 @@ const ModalLoanMethodCreateEdit = (props) => {
       title={`${isEditModal ? 'Chỉnh Sửa' : 'Tạo'} Phương Thức Vay`}
       open={isOpenModalCreateEdit}
       onOk={handleOkModalCreateEdit}
-      isSpinningModalCreateEdit={isSpinningModalCreateEdit}
       onCancel={handleCancelModalCreateEdit}
       footer={null}
     >
