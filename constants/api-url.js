@@ -1,11 +1,7 @@
 const API_URL = {
-  LOAN_METHOD: {
-    // GET: '/api/express/loan-method',
-    GETS: '/api/express/loan-methods',
-    CREATE: '/api/express/loan-method',
-    UPDATE: '/api/express/loan-method',
-    DELETE: '/api/express/loan-method',
-  },
+  LOAN_METHOD: '/api/express/loan-methods',
+  LOAN_TYPE: '/api/express/loan-types',
+  LOAN_PRODUCT: '/api/express/loan-products',
 };
 
 export default API_URL;

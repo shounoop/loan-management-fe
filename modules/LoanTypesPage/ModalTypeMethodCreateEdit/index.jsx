@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
 
-const ModalLoanMethodCreateEdit = (props) => {
+const ModalTypeMethodCreateEdit = (props) => {
   const {
     initialValues = {},
     isOpenModalCreateEdit,
@@ -102,4 +102,4 @@ const ModalLoanMethodCreateEdit = (props) => {
   );
 };
 
-export default ModalLoanMethodCreateEdit;
+export default ModalTypeMethodCreateEdit;

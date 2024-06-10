@@ -22,10 +22,27 @@ const LoanMethodsPage = () => {
   const [initialValues, setInitialValues] = useState({});
   const [deleteMethodId, setDeleteMethodId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [filteredLoanMethods, setFilteredLoanMethods] = useState(loanMethods);
 
   useEffect(() => {
     getList();
   }, []);
+
+  useEffect(() => {
+    if (searchKeyword) {
+      const filteredData = loanMethods.filter((item) => {
+        return (
+          item.loan_method_name.toLowerCase().includes(searchKeyword) ||
+          item.loan_method_desc.toLowerCase().includes(searchKeyword)
+        );
+      });
+
+      setFilteredLoanMethods(filteredData);
+    } else {
+      setFilteredLoanMethods(loanMethods);
+    }
+  }, [loanMethods, searchKeyword]);
 
   const openModalDelete = () => {
     setIsOpenModalConfirmDelete(true);
@@ -35,7 +52,7 @@ const LoanMethodsPage = () => {
     try {
       setIsDeleting(true);
 
-      await http.delete(`${API_URL.LOAN_METHOD.DELETE}/${deleteMethodId}`);
+      await http.delete(`${API_URL.LOAN_METHOD}/${deleteMethodId}`);
 
       // Refresh data
       getList();
@@ -61,7 +78,7 @@ const LoanMethodsPage = () => {
   const getList = async () => {
     try {
       setIsGettingList(true);
-      const res = await http.get(API_URL.LOAN_METHOD.GETS);
+      const res = await http.get(API_URL.LOAN_METHOD);
 
       const data = res?.data?.infor?.data;
 
@@ -80,9 +97,9 @@ const LoanMethodsPage = () => {
       setIsSpinningModalCreateEdit(true);
 
       if (payload.loan_method_id) {
-        await http.put(API_URL.LOAN_METHOD.UPDATE, payload);
+        await http.put(API_URL.LOAN_METHOD, payload);
       } else {
-        await http.post(API_URL.LOAN_METHOD.CREATE, payload);
+        await http.post(API_URL.LOAN_METHOD, payload);
       }
 
       // Refresh data
@@ -100,8 +117,8 @@ const LoanMethodsPage = () => {
     setIsOpenModalCreateEdit(false);
   };
 
-  const onSearch = (value, _e, info) => {
-    console.log(info?.source, value);
+  const onSearch = (value) => {
+    setSearchKeyword(value);
   };
 
   const onClickEdit = (record) => {
@@ -164,6 +181,7 @@ const LoanMethodsPage = () => {
       <Row justify="end" className={styles.search_wrapper}>
         <Search
           placeholder="Nhập từ khóa tìm kiếm..."
+          value={searchKeyword}
           onSearch={onSearch}
           size="middle"
           bordered
@@ -174,7 +192,7 @@ const LoanMethodsPage = () => {
 
       <div className={styles.table_wrapper}>
         <Table
-          dataSource={loanMethods}
+          dataSource={filteredLoanMethods}
           columns={columns}
           loading={isGettingList}
           pagination={false}
