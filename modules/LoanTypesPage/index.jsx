@@ -3,7 +3,7 @@ import styles from './Index.module.scss';
 import { Button, Col, Input, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
-import ModalTypeMethodCreateEdit from './ModalTypeMethodCreateEdit';
+import ModalLoanTypeCreateEdit from './ModalLoanTypeCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
 
@@ -18,9 +18,9 @@ const LoanTypesPage = () => {
   const [isOpenModalConfirmDelete, setIsOpenModalConfirmDelete] =
     useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
-  const [loanMethods, setLoanMethods] = useState([]);
+  const [loanTypes, setLoanTypes] = useState([]);
   const [initialValues, setInitialValues] = useState({});
-  const [deleteMethodId, setDeleteMethodId] = useState(null);
+  const [deleteTypeId, setDeleteTypeId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const LoanTypesPage = () => {
     try {
       setIsDeleting(true);
 
-      await http.delete(`${API_URL.LOAN_METHOD}/${deleteMethodId}`);
+      await http.delete(`${API_URL.LOAN_TYPE}/${deleteTypeId}`);
 
       // Refresh data
       getList();
@@ -61,12 +61,14 @@ const LoanTypesPage = () => {
   const getList = async () => {
     try {
       setIsGettingList(true);
-      const res = await http.get(API_URL.LOAN_METHOD);
+      const res = await http.get(API_URL.LOAN_TYPE);
+
+      console.log('res', res);
 
       const data = res?.data?.infor?.data;
 
       if (data) {
-        setLoanMethods(data);
+        setLoanTypes(data);
       }
     } catch (error) {
       console.error(error);
@@ -79,10 +81,10 @@ const LoanTypesPage = () => {
     try {
       setIsSpinningModalCreateEdit(true);
 
-      if (payload.loan_method_id) {
-        await http.put(API_URL.LOAN_METHOD, payload);
+      if (payload.loan_type_id) {
+        await http.put(API_URL.LOAN_TYPE, payload);
       } else {
-        await http.post(API_URL.LOAN_METHOD, payload);
+        await http.post(API_URL.LOAN_TYPE, payload);
       }
 
       // Refresh data
@@ -106,31 +108,31 @@ const LoanTypesPage = () => {
 
   const onClickEdit = (record) => {
     setInitialValues({
-      loan_method_id: record.loan_method_id,
-      loan_method_name: record.loan_method_name,
-      loan_method_desc: record.loan_method_desc,
+      loan_type_id: record.loan_type_id,
+      loan_type_name: record.loan_type_name,
+      loan_type_desc: record.loan_type_desc,
     });
 
     setIsOpenModalCreateEdit(true);
   };
 
   const onClickDelete = (record) => {
-    setDeleteMethodId(record.loan_method_id);
+    setDeleteTypeId(record.loan_type_id);
     openModalDelete();
   };
 
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'loan_method_id',
+      dataIndex: 'loan_type_id',
     },
     {
-      title: 'Phương thức vay',
-      dataIndex: 'loan_method_name',
+      title: 'Mục đích vay',
+      dataIndex: 'loan_type_name',
     },
     {
       title: 'Mô tả',
-      dataIndex: 'loan_method_desc',
+      dataIndex: 'loan_type_desc',
     },
     {
       title: 'Actions',
@@ -154,6 +156,8 @@ const LoanTypesPage = () => {
     },
   ];
 
+  const isEditModal = !!initialValues.loan_type_id;
+
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
@@ -174,17 +178,19 @@ const LoanTypesPage = () => {
 
       <div className={styles.table_wrapper}>
         <Table
-          dataSource={loanMethods}
+          dataSource={loanTypes}
           columns={columns}
           loading={isGettingList}
           pagination={false}
-          rowKey={(record) => record.loan_method_id}
+          rowKey={(record) => record.loan_type_id}
         />
       </div>
 
       <>
         {isOpenModalCreateEdit && (
-          <ModalTypeMethodCreateEdit
+          <ModalLoanTypeCreateEdit
+            title={isEditModal ? 'Sửa mục đích vay' : 'Tạo mục đích vay'}
+            textOk={isEditModal ? 'Sửa' : 'Tạo'}
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}
@@ -199,7 +205,7 @@ const LoanTypesPage = () => {
             title="Xác Nhận Xoá"
             handleOkModalDelete={handleOkModalDelete}
             handleCancelModalDelete={handleCancelModalDelete}
-            content="Bạn có chắc chắn muốn xóa phương thức vay này?"
+            content="Bạn có chắc chắn muốn xóa mục đích vay này?"
             isDeleting={isDeleting}
           />
         )}

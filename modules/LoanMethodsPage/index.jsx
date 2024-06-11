@@ -25,6 +25,8 @@ const LoanMethodsPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredLoanMethods, setFilteredLoanMethods] = useState(loanMethods);
 
+  console.log({ searchKeyword });
+
   useEffect(() => {
     getList();
   }, []);
@@ -117,9 +119,9 @@ const LoanMethodsPage = () => {
     setIsOpenModalCreateEdit(false);
   };
 
-  const onSearch = (value) => {
-    setSearchKeyword(value);
-  };
+  // const onSearch = (value) => {
+  //   setSearchKeyword(value);
+  // };
 
   const onClickEdit = (record) => {
     setInitialValues({
@@ -171,6 +173,12 @@ const LoanMethodsPage = () => {
     },
   ];
 
+  const onChangeSearch = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+
+  const isEditModal = !!initialValues.loan_method_id;
+
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
@@ -182,7 +190,8 @@ const LoanMethodsPage = () => {
         <Search
           placeholder="Nhập từ khóa tìm kiếm..."
           value={searchKeyword}
-          onSearch={onSearch}
+          onChange={onChangeSearch}
+          // onSearch={onSearch}
           size="middle"
           bordered
           cellSpacing="0"
@@ -203,6 +212,8 @@ const LoanMethodsPage = () => {
       <>
         {isOpenModalCreateEdit && (
           <ModalLoanMethodCreateEdit
+            title={isEditModal ? 'Sửa phương thức vay' : 'Tạo phương thức vay'}
+            textOk={isEditModal ? 'Sửa' : 'Tạo'}
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}
