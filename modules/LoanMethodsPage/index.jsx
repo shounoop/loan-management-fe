@@ -177,6 +177,8 @@ const LoanMethodsPage = () => {
     setSearchKeyword(e.target.value);
   };
 
+  const isEditModal = !!initialValues.loan_method_id;
+
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
@@ -188,7 +190,7 @@ const LoanMethodsPage = () => {
         <Search
           placeholder="Nhập từ khóa tìm kiếm..."
           value={searchKeyword}
-          onChange={(e) => setSearchKeyword(e.target.value)}
+          onChange={onChangeSearch}
           // onSearch={onSearch}
           size="middle"
           bordered
@@ -210,6 +212,8 @@ const LoanMethodsPage = () => {
       <>
         {isOpenModalCreateEdit && (
           <ModalLoanMethodCreateEdit
+            title={isEditModal ? 'Sửa phương thức vay' : 'Tạo phương thức vay'}
+            textOk={isEditModal ? 'Sửa' : 'Tạo'}
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}
