@@ -25,6 +25,8 @@ const LoanMethodsPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredLoanMethods, setFilteredLoanMethods] = useState(loanMethods);
 
+  console.log({ searchKeyword });
+
   useEffect(() => {
     getList();
   }, []);
@@ -117,9 +119,9 @@ const LoanMethodsPage = () => {
     setIsOpenModalCreateEdit(false);
   };
 
-  const onSearch = (value) => {
-    setSearchKeyword(value);
-  };
+  // const onSearch = (value) => {
+  //   setSearchKeyword(value);
+  // };
 
   const onClickEdit = (record) => {
     setInitialValues({
@@ -171,6 +173,10 @@ const LoanMethodsPage = () => {
     },
   ];
 
+  const onChangeSearch = (e) => {
+    setSearchKeyword(e.target.value);
+  };
+
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
@@ -182,7 +188,8 @@ const LoanMethodsPage = () => {
         <Search
           placeholder="Nhập từ khóa tìm kiếm..."
           value={searchKeyword}
-          onSearch={onSearch}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+          // onSearch={onSearch}
           size="middle"
           bordered
           cellSpacing="0"
