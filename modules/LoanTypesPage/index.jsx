@@ -63,8 +63,6 @@ const LoanTypesPage = () => {
       setIsGettingList(true);
       const res = await http.get(API_URL.LOAN_TYPE);
 
-      console.log('res', res);
-
       const data = res?.data?.infor?.data;
 
       if (data) {
@@ -135,7 +133,7 @@ const LoanTypesPage = () => {
       dataIndex: 'loan_type_desc',
     },
     {
-      title: 'Actions',
+      title: 'Hành động',
       key: 'action',
       width: 180,
       render: (_, record) => (
@@ -155,8 +153,6 @@ const LoanTypesPage = () => {
       ),
     },
   ];
-
-  const isEditModal = !!initialValues.loan_type_id;
 
   return (
     <div className={styles.wrapper}>
@@ -181,7 +177,7 @@ const LoanTypesPage = () => {
           dataSource={loanTypes}
           columns={columns}
           loading={isGettingList}
-          pagination={false}
+          pagination={loanTypes.length > 7 ? { pageSize: 7 } : false}
           rowKey={(record) => record.loan_type_id}
         />
       </div>
@@ -189,8 +185,6 @@ const LoanTypesPage = () => {
       <>
         {isOpenModalCreateEdit && (
           <ModalLoanTypeCreateEdit
-            title={isEditModal ? 'Sửa mục đích vay' : 'Tạo mục đích vay'}
-            textOk={isEditModal ? 'Sửa' : 'Tạo'}
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}

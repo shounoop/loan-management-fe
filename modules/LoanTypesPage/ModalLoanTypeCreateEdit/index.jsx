@@ -7,8 +7,6 @@ const ModalLoanTypeCreateEdit = (props) => {
     handleOkModalCreateEdit,
     isSpinningModalCreateEdit,
     handleCancelModalCreateEdit,
-    textOk,
-    title,
   } = props;
 
   const [form] = Form.useForm();
@@ -32,9 +30,11 @@ const ModalLoanTypeCreateEdit = (props) => {
     wrapperCol: { offset: 8, span: 16 },
   };
 
+  const isEditModal = !!initialValues.loan_type_id;
+
   return (
     <Modal
-      title={title}
+      title={isEditModal ? 'Sửa mục đích vay' : 'Tạo mục đích vay'}
       open={isOpenModalCreateEdit}
       onOk={handleOkModalCreateEdit}
       onCancel={handleCancelModalCreateEdit}
@@ -59,7 +59,7 @@ const ModalLoanTypeCreateEdit = (props) => {
           ]}
           hasFeedback
         >
-          <Input className="input-box" placeholder="Nhập tên phương thức vay" />
+          <Input className="input-box" placeholder="Nhập tên mục đích vay" />
         </Form.Item>
 
         <Form.Item
@@ -76,7 +76,7 @@ const ModalLoanTypeCreateEdit = (props) => {
           <Input.TextArea
             rows={4}
             className="input-box"
-            placeholder="Nhập mô tả phương thức vay"
+            placeholder="Nhập mô tả mục đích vay"
           />
         </Form.Item>
 
@@ -92,7 +92,7 @@ const ModalLoanTypeCreateEdit = (props) => {
                 htmlType="submit"
                 loading={isSpinningModalCreateEdit}
               >
-                {textOk}
+                {isEditModal ? 'Sửa' : 'Tạo'}
               </Button>
             </Col>
           </Row>

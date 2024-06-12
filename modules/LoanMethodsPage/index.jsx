@@ -152,7 +152,7 @@ const LoanMethodsPage = () => {
       dataIndex: 'loan_method_desc',
     },
     {
-      title: 'Actions',
+      title: 'Hành động',
       key: 'action',
       width: 180,
       render: (_, record) => (
@@ -176,8 +176,6 @@ const LoanMethodsPage = () => {
   const onChangeSearch = (e) => {
     setSearchKeyword(e.target.value);
   };
-
-  const isEditModal = !!initialValues.loan_method_id;
 
   return (
     <div className={styles.wrapper}>
@@ -204,7 +202,7 @@ const LoanMethodsPage = () => {
           dataSource={filteredLoanMethods}
           columns={columns}
           loading={isGettingList}
-          pagination={false}
+          pagination={filteredLoanMethods.length > 7 ? { pageSize: 7 } : false}
           rowKey={(record) => record.loan_method_id}
         />
       </div>
@@ -212,8 +210,6 @@ const LoanMethodsPage = () => {
       <>
         {isOpenModalCreateEdit && (
           <ModalLoanMethodCreateEdit
-            title={isEditModal ? 'Sửa phương thức vay' : 'Tạo phương thức vay'}
-            textOk={isEditModal ? 'Sửa' : 'Tạo'}
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}

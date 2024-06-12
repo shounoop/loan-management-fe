@@ -7,8 +7,6 @@ const ModalLoanMethodCreateEdit = (props) => {
     handleOkModalCreateEdit,
     isSpinningModalCreateEdit,
     handleCancelModalCreateEdit,
-    title,
-    textOk,
   } = props;
 
   const [form] = Form.useForm();
@@ -32,9 +30,11 @@ const ModalLoanMethodCreateEdit = (props) => {
     wrapperCol: { offset: 8, span: 16 },
   };
 
+  const isEditModal = !!initialValues.loan_method_id;
+
   return (
     <Modal
-      title={title}
+      title={isEditModal ? 'Sửa phương thức vay' : 'Tạo phương thức vay'}
       open={isOpenModalCreateEdit}
       onOk={handleOkModalCreateEdit}
       onCancel={handleCancelModalCreateEdit}
@@ -92,7 +92,7 @@ const ModalLoanMethodCreateEdit = (props) => {
                 htmlType="submit"
                 loading={isSpinningModalCreateEdit}
               >
-                {textOk}
+                {isEditModal ? 'Sửa' : 'Tạo'}
               </Button>
             </Col>
           </Row>
