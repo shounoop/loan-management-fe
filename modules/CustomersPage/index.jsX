@@ -28,7 +28,7 @@ const CustomersPage = () => {
   const [isOpenModalConfirmDelete, setIsOpenModalConfirmDelete] =
     useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
-  const [loanTypes, setLoanTypes] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [initialValues, setInitialValues] = useState(defaultValues);
   const [deleteCustomerId, setDeleteCustomerId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -73,12 +73,10 @@ const CustomersPage = () => {
       setIsGettingList(true);
       const res = await http.get(API_URL.CUSTOMER);
 
-      console.log({ res });
-
       const metadata = res?.data?.metadata;
 
       if (metadata) {
-        setLoanTypes(metadata);
+        setCustomers(metadata);
       }
     } catch (error) {
       console.error(error);
@@ -250,15 +248,15 @@ const CustomersPage = () => {
 
       <div className={styles.table_wrapper}>
         <Table
-          dataSource={loanTypes}
+          dataSource={customers}
           columns={columns}
           loading={isGettingList}
-          pagination={loanTypes.length > 7 ? { pageSize: 7 } : false}
+          pagination={customers.length > 7 ? { pageSize: 7 } : false}
           scroll={{
             // x: scrollX || true,
             x: 1500,
           }}
-          rowKey={(record) => record.loan_type_id}
+          rowKey={(record) => record.customer_id}
         />
       </div>
 

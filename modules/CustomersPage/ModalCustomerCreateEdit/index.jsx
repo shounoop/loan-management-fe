@@ -29,7 +29,7 @@ const ModalCustomerCreateEdit = (props) => {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const isEditModal = !!initialValues.loan_type_id;
+  const isEditModal = !!initialValues.customer_id;
 
   return (
     <Modal
@@ -49,7 +49,7 @@ const ModalCustomerCreateEdit = (props) => {
       >
         <Form.Item
           name="full_name"
-          label="Tên khách hang"
+          label="Tên khách hàng"
           rules={[
             {
               required: true,
