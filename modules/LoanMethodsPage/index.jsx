@@ -1,9 +1,11 @@
 import HeadingWrapper from '@/components/HeadingWrapper';
 import styles from './Index.module.scss';
-import { Button, Col, Input, Row, Table, Modal } from 'antd';
+import { Button, Col, Input, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
 import ModalLoanMethodCreateEdit from './ModalLoanMethodCreateEdit';
+import ModalConfirmDelete from '@/components/ModalConfirmDelete';
+import API_URL from '@/constants/api-url';
 
 const { Search } = Input;
 
@@ -13,25 +15,60 @@ const LoanMethodsPage = () => {
   const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
   const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
     useState(false);
-  const [open, setOpen] = useState(false);
+  const [isOpenModalConfirmDelete, setIsOpenModalConfirmDelete] =
+    useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
   const [loanMethods, setLoanMethods] = useState([]);
   const [initialValues, setInitialValues] = useState({});
+  const [deleteMethodId, setDeleteMethodId] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [filteredLoanMethods, setFilteredLoanMethods] = useState(loanMethods);
+
+  console.log({ searchKeyword });
 
   useEffect(() => {
     getList();
   }, []);
 
+  useEffect(() => {
+    if (searchKeyword) {
+      const filteredData = loanMethods.filter((item) => {
+        return (
+          item.loan_method_name.toLowerCase().includes(searchKeyword) ||
+          item.loan_method_desc.toLowerCase().includes(searchKeyword)
+        );
+      });
+
+      setFilteredLoanMethods(filteredData);
+    } else {
+      setFilteredLoanMethods(loanMethods);
+    }
+  }, [loanMethods, searchKeyword]);
+
   const openModalDelete = () => {
-    setOpen(true);
+    setIsOpenModalConfirmDelete(true);
   };
 
-  const handleOkModalDelete = () => {
-    setOpen(false);
+  const handleOkModalDelete = async () => {
+    try {
+      setIsDeleting(true);
+
+      await http.delete(`${API_URL.LOAN_METHOD}/${deleteMethodId}`);
+
+      // Refresh data
+      getList();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsDeleting(false);
+    }
+
+    setIsOpenModalConfirmDelete(false);
   };
 
   const handleCancelModalDelete = () => {
-    setOpen(false);
+    setIsOpenModalConfirmDelete(false);
   };
 
   const openModalCreate = () => {
@@ -43,7 +80,7 @@ const LoanMethodsPage = () => {
   const getList = async () => {
     try {
       setIsGettingList(true);
-      const res = await http.get('/api/express/loan-methods');
+      const res = await http.get(API_URL.LOAN_METHOD);
 
       const data = res?.data?.infor?.data;
 
@@ -62,9 +99,9 @@ const LoanMethodsPage = () => {
       setIsSpinningModalCreateEdit(true);
 
       if (payload.loan_method_id) {
-        await http.put('/api/express/loan-method', payload);
+        await http.put(API_URL.LOAN_METHOD, payload);
       } else {
-        await http.post('/api/express/loan-method', payload);
+        await http.post(API_URL.LOAN_METHOD, payload);
       }
 
       // Refresh data
@@ -82,9 +119,9 @@ const LoanMethodsPage = () => {
     setIsOpenModalCreateEdit(false);
   };
 
-  const onSearch = (value, _e, info) => {
-    console.log(info?.source, value);
-  };
+  // const onSearch = (value) => {
+  //   setSearchKeyword(value);
+  // };
 
   const onClickEdit = (record) => {
     setInitialValues({
@@ -94,6 +131,11 @@ const LoanMethodsPage = () => {
     });
 
     setIsOpenModalCreateEdit(true);
+  };
+
+  const onClickDelete = (record) => {
+    setDeleteMethodId(record.loan_method_id);
+    openModalDelete();
   };
 
   const columns = [
@@ -110,7 +152,7 @@ const LoanMethodsPage = () => {
       dataIndex: 'loan_method_desc',
     },
     {
-      title: 'Actions',
+      title: 'Hành động',
       key: 'action',
       width: 180,
       render: (_, record) => (
@@ -122,13 +164,7 @@ const LoanMethodsPage = () => {
           </Col>
 
           <Col>
-            <Button
-              danger
-              onClick={() => {
-                openModalDelete();
-                console.log('Delete button clicked', record);
-              }}
-            >
+            <Button danger onClick={() => onClickDelete(record)}>
               Xóa
             </Button>
           </Col>
@@ -136,6 +172,10 @@ const LoanMethodsPage = () => {
       ),
     },
   ];
+
+  const onChangeSearch = (e) => {
+    setSearchKeyword(e.target.value);
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -147,20 +187,23 @@ const LoanMethodsPage = () => {
       <Row justify="end" className={styles.search_wrapper}>
         <Search
           placeholder="Nhập từ khóa tìm kiếm..."
-          onSearch={onSearch}
+          value={searchKeyword}
+          onChange={onChangeSearch}
+          // onSearch={onSearch}
           size="middle"
           bordered
-          cellspacing="0"
+          cellSpacing="0"
           style={{ width: 300 }}
         />
       </Row>
 
       <div className={styles.table_wrapper}>
         <Table
-          dataSource={loanMethods}
+          dataSource={filteredLoanMethods}
           columns={columns}
           loading={isGettingList}
-          pagination={false}
+          pagination={filteredLoanMethods.length > 7 ? { pageSize: 7 } : false}
+          rowKey={(record) => record.loan_method_id}
         />
       </div>
 
@@ -175,24 +218,16 @@ const LoanMethodsPage = () => {
           />
         )}
 
-        <Modal
-          open={open}
-          title="Confirm Delete"
-          onOk={handleOkModalDelete}
-          onCancel={handleCancelModalDelete}
-          footer={() => (
-            <>
-              <Button>Hủy</Button>
-
-              <Button type="primary" danger>
-                Xóa
-              </Button>
-            </>
-          )}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
+        {isOpenModalConfirmDelete && (
+          <ModalConfirmDelete
+            open={isOpenModalConfirmDelete}
+            title="Xác Nhận Xoá"
+            handleOkModalDelete={handleOkModalDelete}
+            handleCancelModalDelete={handleCancelModalDelete}
+            content="Bạn có chắc chắn muốn xóa phương thức vay này?"
+            isDeleting={isDeleting}
+          />
+        )}
       </>
     </div>
   );

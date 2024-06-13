@@ -1,6 +1,14 @@
 import React from 'react';
 import { Menu } from 'antd';
-import { GlobalOutlined, MenuOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined,
+  MenuOutlined,
+  BlockOutlined,
+  AimOutlined,
+  IdcardOutlined,
+  FileProtectOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
 const MenuKeys = {
@@ -19,37 +27,37 @@ const CustomSider = () => {
   const menuItems = [
     {
       key: MenuKeys.DASHBOARD,
-      icon: <GlobalOutlined />,
+      icon: <HomeOutlined />,
       label: 'Trang Chủ',
       path: '/',
     },
     {
       key: MenuKeys.LOAN_METHODS,
-      icon: <GlobalOutlined />,
+      icon: <BlockOutlined />,
       label: 'Phương Thức Vay',
       path: '/loan-methods',
     },
     {
       key: MenuKeys.LOAN_TYPES,
-      icon: <GlobalOutlined />,
-      label: 'Kiểu Vay',
+      icon: <AimOutlined />,
+      label: 'Mục Đích Vay',
       path: '/loan-types',
     },
     {
       key: MenuKeys.LOAN_APPLICATIONS,
-      icon: <GlobalOutlined />,
+      icon: <IdcardOutlined />,
       label: 'Đơn Vay',
       path: '/loan-applications',
     },
     {
       key: MenuKeys.LOAN_PRODUCTS,
-      icon: <GlobalOutlined />,
+      icon: <FileProtectOutlined />,
       label: 'Sản Phẩm Vay',
       path: '/loan-products',
     },
     {
       key: MenuKeys.CUSTOMERS,
-      icon: <GlobalOutlined />,
+      icon: <UserOutlined />,
       label: 'Khách Hàng',
       path: '/customers',
     },

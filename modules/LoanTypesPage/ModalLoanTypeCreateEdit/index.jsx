@@ -1,6 +1,6 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd';
 
-const ModalLoanMethodCreateEdit = (props) => {
+const ModalLoanTypeCreateEdit = (props) => {
   const {
     initialValues = {},
     isOpenModalCreateEdit,
@@ -13,9 +13,9 @@ const ModalLoanMethodCreateEdit = (props) => {
 
   const onFinish = (values) => {
     const payload = {
-      loan_method_name: values.loan_method_name,
-      loan_method_desc: values.loan_method_desc,
-      loan_method_id: initialValues.loan_method_id,
+      loan_type_name: values.loan_type_name,
+      loan_type_desc: values.loan_type_desc,
+      loan_type_id: initialValues.loan_type_id,
     };
 
     handleOkModalCreateEdit(payload);
@@ -30,11 +30,11 @@ const ModalLoanMethodCreateEdit = (props) => {
     wrapperCol: { offset: 8, span: 16 },
   };
 
-  const isEditModal = !!initialValues.loan_method_id;
+  const isEditModal = !!initialValues.loan_type_id;
 
   return (
     <Modal
-      title={isEditModal ? 'Sửa phương thức vay' : 'Tạo phương thức vay'}
+      title={isEditModal ? 'Sửa mục đích vay' : 'Tạo mục đích vay'}
       open={isOpenModalCreateEdit}
       onOk={handleOkModalCreateEdit}
       onCancel={handleCancelModalCreateEdit}
@@ -49,21 +49,21 @@ const ModalLoanMethodCreateEdit = (props) => {
         onFinish={onFinish}
       >
         <Form.Item
-          name="loan_method_name"
-          label="Tên phương thức"
+          name="loan_type_name"
+          label="Mục đích vay"
           rules={[
             {
               required: true,
-              message: 'Tên phương thức không được để trống',
+              message: 'Mục đích vay không được để trống',
             },
           ]}
           hasFeedback
         >
-          <Input className="input-box" placeholder="Nhập tên phương thức vay" />
+          <Input className="input-box" placeholder="Nhập tên mục đích vay" />
         </Form.Item>
 
         <Form.Item
-          name="loan_method_desc"
+          name="loan_type_desc"
           label="Mô tả"
           rules={[
             {
@@ -76,7 +76,7 @@ const ModalLoanMethodCreateEdit = (props) => {
           <Input.TextArea
             rows={4}
             className="input-box"
-            placeholder="Nhập mô tả phương thức vay"
+            placeholder="Nhập mô tả mục đích vay"
           />
         </Form.Item>
 
@@ -102,4 +102,4 @@ const ModalLoanMethodCreateEdit = (props) => {
   );
 };
 
-export default ModalLoanMethodCreateEdit;
+export default ModalLoanTypeCreateEdit;
