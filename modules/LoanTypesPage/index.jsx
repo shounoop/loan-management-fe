@@ -9,6 +9,14 @@ import API_URL from '@/constants/api-url';
 
 const { Search } = Input;
 
+const defaultValues = {
+  loan_type_name: 'Vay xây nhà',
+  loan_type_desc: 'Vay xây nhà',
+  interest_rate: 0.1,
+  late_interest_fee: 0.05,
+  prepay_interest_fee: 0.1,
+};
+
 const LoanTypesPage = () => {
   const { http } = useAxios();
 
@@ -19,7 +27,7 @@ const LoanTypesPage = () => {
     useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
   const [loanTypes, setLoanTypes] = useState([]);
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState(defaultValues);
   const [deleteTypeId, setDeleteTypeId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -55,7 +63,7 @@ const LoanTypesPage = () => {
   const openModalCreate = () => {
     setIsOpenModalCreateEdit(true);
 
-    setInitialValues({});
+    setInitialValues(defaultValues);
   };
 
   const getList = async () => {
@@ -76,6 +84,7 @@ const LoanTypesPage = () => {
   };
 
   const handleOkModalCreateEdit = async (payload) => {
+    console.log('payload', payload);
     try {
       setIsSpinningModalCreateEdit(true);
 
@@ -105,11 +114,7 @@ const LoanTypesPage = () => {
   };
 
   const onClickEdit = (record) => {
-    setInitialValues({
-      loan_type_id: record.loan_type_id,
-      loan_type_name: record.loan_type_name,
-      loan_type_desc: record.loan_type_desc,
-    });
+    setInitialValues(...record);
 
     setIsOpenModalCreateEdit(true);
   };

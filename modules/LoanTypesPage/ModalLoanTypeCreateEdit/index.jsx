@@ -15,6 +15,9 @@ const ModalLoanTypeCreateEdit = (props) => {
     const payload = {
       loan_type_name: values.loan_type_name,
       loan_type_desc: values.loan_type_desc,
+      interest_rate: values.interest_rate,
+      late_interest_fee: values.late_interest_fee,
+      prepay_interest_fee: values.prepay_interest_fee,
       loan_type_id: initialValues.loan_type_id,
     };
 
@@ -60,6 +63,51 @@ const ModalLoanTypeCreateEdit = (props) => {
           hasFeedback
         >
           <Input className="input-box" placeholder="Nhập tên mục đích vay" />
+        </Form.Item>
+
+        <Form.Item
+          name="interest_rate"
+          label="Lãi suất"
+          rules={[
+            {
+              required: true,
+              message: 'Lãi suất không được để trống',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input className="input-box" placeholder="Nhập lãi suất" />
+        </Form.Item>
+
+        <Form.Item
+          name="late_interest_fee"
+          label="Phí phạt nộp trễ hạn"
+          rules={[
+            {
+              required: true,
+              message: 'Phí phạt nộp trễ hạn không được để trống',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input
+            className="input-box"
+            placeholder="Nhập phí phạt nộp trễ hạn"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="prepay_interest_fee"
+          label="Phí phạt trả trước"
+          rules={[
+            {
+              required: true,
+              message: 'Phí phạt trả trước không được để trống',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input className="input-box" placeholder="Nhập phí phạt trả trước" />
         </Form.Item>
 
         <Form.Item
