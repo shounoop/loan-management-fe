@@ -95,8 +95,8 @@ const ModalCustomerCreateEdit = (props) => {
             placeholder="Chọn giới tính"
             defaultValue={initialValues.gender}
           >
-            <Select.Option value="Nam">Nam</Select.Option>
-            <Select.Option value="Nữ">Nữ</Select.Option>
+            <Select.Option value="Male">Nam</Select.Option>
+            <Select.Option value="Female">Nữ</Select.Option>
           </Select>
         </Form.Item>
 
@@ -206,8 +206,8 @@ const ModalCustomerCreateEdit = (props) => {
             placeholder="Chọn trạng thái"
             defaultValue={initialValues.customer_status}
           >
-            <Select.Option value="Active">Hoạt động</Select.Option>
-            <Select.Option value="Inactive">Không hoạt động</Select.Option>
+            <Select.Option value="active">Hoạt động</Select.Option>
+            <Select.Option value="inactive">Không hoạt động</Select.Option>
           </Select>
         </Form.Item>
 

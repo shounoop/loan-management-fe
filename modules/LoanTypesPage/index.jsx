@@ -6,6 +6,7 @@ import useAxios from '@/utils/axios';
 import ModalLoanTypeCreateEdit from './ModalLoanTypeCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
+import MyToast from '@mdrakibul8001/toastify';
 
 const { Search } = Input;
 
@@ -19,6 +20,7 @@ const defaultValues = {
 
 const LoanTypesPage = () => {
   const { http } = useAxios();
+  const { notify } = MyToast();
 
   const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
   const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
@@ -45,10 +47,14 @@ const LoanTypesPage = () => {
 
       await http.delete(`${API_URL.LOAN_TYPE}/${deleteTypeId}`);
 
+      notify('info', 'Xóa mục đích vay thành công!');
+
       // Refresh data
       getList();
     } catch (error) {
       console.error(error);
+
+      notify('error', 'Xóa mục đích vay thất bại!');
     } finally {
       setIsDeleting(false);
     }
@@ -84,14 +90,17 @@ const LoanTypesPage = () => {
   };
 
   const handleOkModalCreateEdit = async (payload) => {
-    console.log('payload', payload);
     try {
       setIsSpinningModalCreateEdit(true);
 
       if (payload.loan_type_id) {
         await http.put(API_URL.LOAN_TYPE, payload);
+
+        notify('info', 'Cập nhật mục đích vay thành công!');
       } else {
         await http.post(API_URL.LOAN_TYPE, payload);
+
+        notify('info', 'Tạo mới mục đích vay thành công!');
       }
 
       // Refresh data
@@ -100,6 +109,8 @@ const LoanTypesPage = () => {
       setIsOpenModalCreateEdit(false);
     } catch (error) {
       console.log(error);
+
+      notify('error', 'Thao tác thất bại!');
     } finally {
       setIsSpinningModalCreateEdit(false);
     }
@@ -114,7 +125,7 @@ const LoanTypesPage = () => {
   };
 
   const onClickEdit = (record) => {
-    setInitialValues(...record);
+    setInitialValues({ ...record });
 
     setIsOpenModalCreateEdit(true);
   };
