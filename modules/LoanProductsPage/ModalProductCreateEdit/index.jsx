@@ -21,12 +21,12 @@ const ModalProductCreateEdit = (props) => {
   };
 
   const formProps = {
-    labelCol: { span: 11 },
-    wrapperCol: { span: 15 },
+    // labelCol: { span: 11 },
+    // wrapperCol: { span: 15 },
   };
 
   const lastFormItemProps = {
-    wrapperCol: { offset: 11, span: 15 },
+    // wrapperCol: { offset: 11, span: 15 },
   };
 
   const isEditModal = !!initialValues.loan_product_id;
@@ -44,12 +44,13 @@ const ModalProductCreateEdit = (props) => {
         initialValues={initialValues}
         className="mt-3"
         {...formProps}
+        layout="vertical"
         form={form}
         name="control-hooks"
         onFinish={onFinish}
       >
-        <Row justify="space-between">
-          <Col>
+        <Row justify="space-between" gutter={24}>
+          <Col span={24}>
             <Form.Item
               name="loan_product_name"
               label="Tên sản phẩm vay"
@@ -67,25 +68,49 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.loan_product_name}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
-              name="interest_rate"
-              label="Tỷ lệ lãi suất"
+              name="loan_method_id"
+              label="Phương thức vay"
               rules={[
                 {
                   required: true,
-                  message: 'Vui lòng nhập tỷ lệ lãi suất!',
+                  message: 'Phương thức vay không được để trống',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="Nhập tỷ lệ lãi suất"
-                defaultValue={initialValues.interest_rate}
+                placeholder="Nhập phương thức vay"
+                defaultValue={initialValues.loan_method_id}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
+            <Form.Item
+              name="loan_type_id"
+              label="Mục đích vay"
+              rules={[
+                {
+                  required: true,
+                  message: 'Mục đích vay không được để trống',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input
+                className="input-box"
+                placeholder="Nhập mục đích vay"
+                defaultValue={initialValues.loan_type_id}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
             <Form.Item
               name="minimum_amount"
               label="Số tiền tối thiểu"
@@ -103,7 +128,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.minimum_amount}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
               name="maximum_amount"
               label="Số tiền tối đa"
@@ -121,7 +148,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.maximum_amount}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
               name="minimum_term"
               label="Kỳ hạn tối thiểu"
@@ -139,7 +168,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.minimum_term}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
               name="maximum_term"
               label="Kỳ hạn tối đa"
@@ -159,7 +190,7 @@ const ModalProductCreateEdit = (props) => {
             </Form.Item>
           </Col>
 
-          <Col>
+          <Col span={12}>
             <Form.Item
               name="repayment_schedule"
               label="Chu kỳ trả nợ"
@@ -177,7 +208,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.repayment_schedule}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
               name="eligibility_criteria"
               label="Tiêu chí đủ điều kiện"
@@ -195,43 +228,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.eligibility_criteria}
               />
             </Form.Item>
+          </Col>
 
-            <Form.Item
-              name="product_description"
-              label="Mô tả"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập mô tả!',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input
-                className="input-box"
-                placeholder="Nhập mô tả"
-                defaultValue={initialValues.product_description}
-              />
-            </Form.Item>
-
-            <Form.Item
-              name="additional_notes"
-              label="Ghi chú thêm"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập ghi chú thêm!',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input
-                className="input-box"
-                placeholder="Nhập ghi chú thêm"
-                defaultValue={initialValues.additional_notes}
-              />
-            </Form.Item>
-
+          <Col span={12}>
             <Form.Item
               name="late_fee"
               label="Phí trễ hạn"
@@ -249,7 +248,9 @@ const ModalProductCreateEdit = (props) => {
                 defaultValue={initialValues.late_fee}
               />
             </Form.Item>
+          </Col>
 
+          <Col span={12}>
             <Form.Item
               name="status"
               label="Trạng thái"
@@ -261,32 +262,80 @@ const ModalProductCreateEdit = (props) => {
               ]}
               hasFeedback
             >
-              <Input
+              <Select
                 className="input-box"
-                placeholder="Nhập trạng thái"
+                placeholder="Chọn trạng thái"
                 defaultValue={initialValues.status}
+              >
+                <Select.Option value="active">Hoạt động</Select.Option>
+                <Select.Option value="inactive">Không hoạt động</Select.Option>
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col span={24}>
+            <Form.Item
+              name="product_description"
+              label="Mô tả"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập mô tả!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.TextArea
+                rows={4}
+                className="input-box"
+                placeholder="Nhập mô tả"
+                defaultValue={initialValues.product_description}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={24}>
+            <Form.Item
+              name="additional_notes"
+              label="Ghi chú thêm"
+              rules={[
+                {
+                  required: true,
+                  message: 'Vui lòng nhập ghi chú thêm!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input.TextArea
+                rows={4}
+                className="input-box"
+                placeholder="Nhập ghi chú thêm"
+                defaultValue={initialValues.additional_notes}
               />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
-          <Row justify="end" gutter={8}>
-            <Col>
-              <Button onClick={handleCancelModalCreateEdit}>Hủy</Button>
-            </Col>
+        <Row justify="end" gutter={8}>
+          <Col>
+            <Button size="large" onClick={handleCancelModalCreateEdit}>
+              Hủy
+            </Button>
+          </Col>
 
-            <Col>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isSpinningModalCreateEdit}
-              >
-                {isEditModal ? 'Sửa' : 'Tạo'}
-              </Button>
-            </Col>
-          </Row>
-        </Form.Item>
+          <Col>
+            <Button
+              size="large"
+              type="primary"
+              htmlType="submit"
+              loading={isSpinningModalCreateEdit}
+            >
+              {isEditModal ? 'Sửa' : 'Tạo'}
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

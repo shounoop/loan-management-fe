@@ -6,21 +6,25 @@ import useAxios from '@/utils/axios';
 import ModalCustomerCreateEdit from './ModalCustomerCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
+import MyToast from '@mdrakibul8001/toastify';
 
 const { Search } = Input;
 
 const defaultValues = {
-  date_of_birth: '01-01-1990',
-  identity_number: '123456789',
-  address: 'Hà Nội',
-  phone_number: '0123456789',
-  email: 'nguyenvana@gmail.com',
-  occupation: 'Kỹ sư',
-  customer_status: 'Active',
+  full_name: 'John Wick',
+  date_of_birth: '2003-08-28',
+  gender: 'Male',
+  identity_number: 'ID1234567899',
+  address: 'New York, USA',
+  phone_number: '0936045045',
+  email: 'johnwick@gmail.com',
+  occupation: 'Developer',
+  customer_status: 'active',
 };
 
 const CustomersPage = () => {
   const { http } = useAxios();
+  const { notify } = MyToast();
 
   const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
   const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
@@ -49,8 +53,12 @@ const CustomersPage = () => {
 
       // Refresh data
       getList();
+
+      notify('info', 'Xóa khách hàng thành công!');
     } catch (error) {
       console.error(error);
+
+      notify('error', 'Có lỗi xảy ra!');
     } finally {
       setIsDeleting(false);
     }
@@ -96,8 +104,12 @@ const CustomersPage = () => {
           ...payload,
           customer_id: undefined,
         });
+
+        notify('info', 'Cập nhật khách hàng thành công!');
       } else {
         await http.post(API_URL.CUSTOMER, payload);
+
+        notify('info', 'Tạo khách hàng thành công!');
       }
 
       // Refresh data
@@ -106,6 +118,8 @@ const CustomersPage = () => {
       setIsOpenModalCreateEdit(false);
     } catch (error) {
       console.log(error);
+
+      notify('error', 'Có lỗi xảy ra!');
     } finally {
       setIsSpinningModalCreateEdit(false);
     }
@@ -158,8 +172,8 @@ const CustomersPage = () => {
       ellipsis: true,
       render: (status) => {
         return (
-          <Tag color={status === 'Active' ? 'green' : 'red'}>
-            {status === 'Active' ? 'Hoạt động' : 'Không hoạt động'}
+          <Tag color={status === 'active' ? 'green' : 'red'}>
+            {status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
           </Tag>
         );
       },
