@@ -6,11 +6,21 @@ import useAxios from '@/utils/axios';
 import ModalLoanTypeCreateEdit from './ModalLoanTypeCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
+import MyToast from '@mdrakibul8001/toastify';
 
 const { Search } = Input;
 
+const defaultValues = {
+  loan_type_name: 'Vay xây nhà',
+  loan_type_desc: 'Vay xây nhà',
+  interest_rate: 0.1,
+  late_interest_fee: 0.05,
+  prepay_interest_fee: 0.1,
+};
+
 const LoanTypesPage = () => {
   const { http } = useAxios();
+  const { notify } = MyToast();
 
   const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
   const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
@@ -19,7 +29,7 @@ const LoanTypesPage = () => {
     useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
   const [loanTypes, setLoanTypes] = useState([]);
-  const [initialValues, setInitialValues] = useState({});
+  const [initialValues, setInitialValues] = useState(defaultValues);
   const [deleteTypeId, setDeleteTypeId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -37,10 +47,14 @@ const LoanTypesPage = () => {
 
       await http.delete(`${API_URL.LOAN_TYPE}/${deleteTypeId}`);
 
+      notify('info', 'Xóa mục đích vay thành công!');
+
       // Refresh data
       getList();
     } catch (error) {
       console.error(error);
+
+      notify('error', 'Xóa mục đích vay thất bại!');
     } finally {
       setIsDeleting(false);
     }
@@ -55,7 +69,7 @@ const LoanTypesPage = () => {
   const openModalCreate = () => {
     setIsOpenModalCreateEdit(true);
 
-    setInitialValues({});
+    setInitialValues(defaultValues);
   };
 
   const getList = async () => {
@@ -81,8 +95,12 @@ const LoanTypesPage = () => {
 
       if (payload.loan_type_id) {
         await http.put(API_URL.LOAN_TYPE, payload);
+
+        notify('info', 'Cập nhật mục đích vay thành công!');
       } else {
         await http.post(API_URL.LOAN_TYPE, payload);
+
+        notify('info', 'Tạo mới mục đích vay thành công!');
       }
 
       // Refresh data
@@ -91,6 +109,8 @@ const LoanTypesPage = () => {
       setIsOpenModalCreateEdit(false);
     } catch (error) {
       console.log(error);
+
+      notify('error', 'Thao tác thất bại!');
     } finally {
       setIsSpinningModalCreateEdit(false);
     }
@@ -105,11 +125,7 @@ const LoanTypesPage = () => {
   };
 
   const onClickEdit = (record) => {
-    setInitialValues({
-      loan_type_id: record.loan_type_id,
-      loan_type_name: record.loan_type_name,
-      loan_type_desc: record.loan_type_desc,
-    });
+    setInitialValues({ ...record });
 
     setIsOpenModalCreateEdit(true);
   };
