@@ -40,7 +40,7 @@ const ModalProductCreateEdit = (props) => {
         onFinish={onFinish}
       >
         <Row justify="space-between" gutter={24}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               name="loan_product_name"
               label="Tên sản phẩm vay"
@@ -192,11 +192,15 @@ const ModalProductCreateEdit = (props) => {
               ]}
               hasFeedback
             >
-              <Input
+              <Select
                 className="input-box"
                 placeholder="Nhập chu kỳ trả nợ"
-                defaultValue={initialValues.repayment_schedule}
-              />
+                defaultValue={initialValues.status}
+              >
+                <Select.Option value={1}>Tháng</Select.Option>
+                <Select.Option value={2}>Quý</Select.Option>
+                <Select.Option value={3}>Năm</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
 
@@ -216,26 +220,6 @@ const ModalProductCreateEdit = (props) => {
                 className="input-box"
                 placeholder="Nhập tiêu chí đủ điều kiện"
                 defaultValue={initialValues.eligibility_criteria}
-              />
-            </Form.Item>
-          </Col>
-
-          <Col span={12}>
-            <Form.Item
-              name="late_fee"
-              label="Phí trễ hạn"
-              rules={[
-                {
-                  required: true,
-                  message: 'Vui lòng nhập phí trễ hạn!',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input
-                className="input-box"
-                placeholder="Nhập phí trễ hạn"
-                defaultValue={initialValues.late_fee}
               />
             </Form.Item>
           </Col>
@@ -267,7 +251,7 @@ const ModalProductCreateEdit = (props) => {
         <Row>
           <Col span={24}>
             <Form.Item
-              name="product_description"
+              name="loan_product_desc"
               label="Mô tả"
               rules={[
                 {
@@ -281,7 +265,7 @@ const ModalProductCreateEdit = (props) => {
                 rows={4}
                 className="input-box"
                 placeholder="Nhập mô tả"
-                defaultValue={initialValues.product_description}
+                defaultValue={initialValues.loan_product_desc}
               />
             </Form.Item>
           </Col>
@@ -320,7 +304,6 @@ const ModalProductCreateEdit = (props) => {
 
           <Col>
             <Button
-              size="large"
               type="primary"
               htmlType="submit"
               loading={isSpinningModalCreateEdit}

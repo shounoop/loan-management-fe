@@ -96,22 +96,27 @@ const LoanApplicationsPage = () => {
   };
 
   const handleOkModalCreateEdit = async (payload) => {
+    const formattedPayload = {
+      ...payload,
+      payment_status: Number(payload.payment_status),
+    };
+
     try {
       setIsSpinningModalCreateEdit(true);
 
-      const loanApplicationId = payload.payment_id;
+      const loanApplicationId = formattedPayload.payment_id;
 
       if (loanApplicationId) {
         const editPayload = {
-          ...payload,
+          ...formattedPayload,
           payment_id: undefined,
           createdAt: undefined,
           updatedAt: undefined,
-          principal_amount: Number(payload.principal_amount),
-          remaining_balance: Number(payload.remaining_balance),
-          amount_paid: Number(payload.amount_paid),
-          next_term_fee: Number(payload.next_term_fee),
-          loan_term: Number(payload.loan_term),
+          principal_amount: Number(formattedPayload.principal_amount),
+          remaining_balance: Number(formattedPayload.remaining_balance),
+          amount_paid: Number(formattedPayload.amount_paid),
+          next_term_fee: Number(formattedPayload.next_term_fee),
+          loan_term: Number(formattedPayload.loan_term),
         };
 
         await http.put(

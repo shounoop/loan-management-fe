@@ -36,4 +36,21 @@ const getLoanApplicationStatusText = (value) => {
   }
 };
 
-export { getLoanApplicationStatusColor, getLoanApplicationStatusText };
+const getRepaymentScheduleText = (value) => {
+  switch (value) {
+    case 1:
+      return 'Tháng';
+    case 2:
+      return 'Quý';
+    case 3:
+      return 'Năm';
+    default:
+      return 'Tháng';
+  }
+};
+
+export {
+  getLoanApplicationStatusColor,
+  getLoanApplicationStatusText,
+  getRepaymentScheduleText,
+};

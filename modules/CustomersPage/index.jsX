@@ -181,12 +181,18 @@ const CustomersPage = () => {
     {
       title: 'Email',
       dataIndex: 'email',
+      width: 200,
       ellipsis: true,
     },
     {
       title: 'Giới tính',
       dataIndex: 'gender',
       ellipsis: true,
+      width: 100,
+      render: (value) => {
+        if (value === 'Male') return 'Nam';
+        return 'Nữ';
+      },
     },
     {
       title: 'Số CMND',
