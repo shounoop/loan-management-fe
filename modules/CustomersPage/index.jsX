@@ -19,7 +19,7 @@ const defaultValues = {
   phone_number: '0936045045',
   email: 'johnwick@gmail.com',
   occupation: 'Developer',
-  customer_status: 'active',
+  customer_status: 1,
 };
 
 const CustomersPage = () => {
@@ -172,8 +172,8 @@ const CustomersPage = () => {
       ellipsis: true,
       render: (status) => {
         return (
-          <Tag color={status === 'active' ? 'green' : 'red'}>
-            {status === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+          <Tag color={status === 1 ? 'green' : 'red'}>
+            {status === 1 ? 'Đang hoạt động' : 'Không hoạt động'}
           </Tag>
         );
       },
@@ -181,12 +181,18 @@ const CustomersPage = () => {
     {
       title: 'Email',
       dataIndex: 'email',
+      width: 200,
       ellipsis: true,
     },
     {
       title: 'Giới tính',
       dataIndex: 'gender',
       ellipsis: true,
+      width: 100,
+      render: (value) => {
+        if (value === 'Male') return 'Nam';
+        return 'Nữ';
+      },
     },
     {
       title: 'Số CMND',

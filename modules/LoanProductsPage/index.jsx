@@ -7,6 +7,7 @@ import ModalProductCreateEdit from './ModalProductCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
 import MyToast from '@mdrakibul8001/toastify';
+import { getRepaymentScheduleText } from '@/utils/common';
 
 const { Search } = Input;
 
@@ -18,12 +19,11 @@ const defaultValues = {
   maximum_amount: 10000,
   minimum_term: 1,
   maximum_term: 12,
-  repayment_schedule: 'Tháng',
+  repayment_schedule: 1,
   eligibility_criteria: 'Eligibility Criteria 1',
-  product_description: 'Product Description 1',
+  loan_product_desc: 'Product Description 1',
   additional_notes: 'Additional Notes 1',
-  late_fee: 0.05,
-  status: 'active',
+  status: 1,
 };
 
 const LoanProductsPage = () => {
@@ -98,28 +98,33 @@ const LoanProductsPage = () => {
   };
 
   const handleOkModalCreateEdit = async (payload) => {
+    const formattedPayload = {
+      ...payload,
+      status: Number(payload.status),
+      repayment_schedule: Number(payload.repayment_schedule),
+    };
+
     try {
       setIsSpinningModalCreateEdit(true);
 
-      const loan_product_id = payload.loan_product_id;
+      const loan_product_id = formattedPayload.loan_product_id;
 
       if (loan_product_id) {
         const editPayload = {
-          ...payload,
+          ...formattedPayload,
           ProductMethod: undefined,
           ProductType: undefined,
           createdAt: undefined,
           updatedAt: undefined,
-          product_description: undefined,
-          maximum_amount: Number(payload.maximum_amount),
-          minimum_amount: Number(payload.minimum_amount),
+          maximum_amount: Number(formattedPayload.maximum_amount),
+          minimum_amount: Number(formattedPayload.minimum_amount),
         };
 
         await http.put(`${API_URL.LOAN_PRODUCT}`, editPayload);
 
         notify('info', 'Cập nhật sản phẩm vay thành công!');
       } else {
-        await http.post(API_URL.LOAN_PRODUCT, payload);
+        await http.post(API_URL.LOAN_PRODUCT, formattedPayload);
 
         notify('info', 'Tạo mới sản phẩm vay thành công!');
       }
@@ -184,6 +189,17 @@ const LoanProductsPage = () => {
       ellipsis: true,
     },
     {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      align: 'center',
+      ellipsis: true,
+      render: (value) => (
+        <Tag color={value === 1 ? 'green' : 'red'}>
+          {value === 1 ? 'Đang hoạt động' : 'Không hoạt động'}
+        </Tag>
+      ),
+    },
+    {
       title: 'Số tiền vay tối thiểu',
       dataIndex: 'minimum_amount',
       align: 'right',
@@ -213,6 +229,7 @@ const LoanProductsPage = () => {
       title: 'Lịch trả nợ',
       dataIndex: 'repayment_schedule',
       ellipsis: true,
+      render: getRepaymentScheduleText,
     },
     {
       title: 'Điều kiện vay',
@@ -221,29 +238,13 @@ const LoanProductsPage = () => {
     },
     {
       title: 'Mô tả sản phẩm',
-      dataIndex: 'product_description',
+      dataIndex: 'loan_product_desc',
       ellipsis: true,
     },
     {
       title: 'Ghi chú',
       dataIndex: 'additional_notes',
       ellipsis: true,
-    },
-    {
-      title: 'Phí trễ hạn',
-      dataIndex: 'late_fee',
-      ellipsis: true,
-    },
-    {
-      title: 'Trạng thái',
-      dataIndex: 'status',
-      align: 'center',
-      ellipsis: true,
-      render: (value) => (
-        <Tag color={value === 'active' ? 'success' : 'error'}>
-          {value === 'active' ? 'Hoạt động' : 'Không hoạt động'}
-        </Tag>
-      ),
     },
     {
       title: 'Hành động',

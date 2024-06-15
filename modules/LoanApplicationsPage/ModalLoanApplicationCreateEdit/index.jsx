@@ -1,4 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row, Select } from 'antd';
+import { Button, Col, Form, Input, Modal, Row } from 'antd';
 
 const ModalLoanApplicationCreateEdit = (props) => {
   const {
@@ -156,6 +156,26 @@ const ModalLoanApplicationCreateEdit = (props) => {
                 className="input-box"
                 placeholder="Số dư còn lại"
                 defaultValue={initialValues.remaining_balance}
+              />
+            </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            <Form.Item
+              name="payment_status"
+              label="Trạng thái"
+              rules={[
+                {
+                  required: true,
+                  message: 'Trạng thái không được để trống!',
+                },
+              ]}
+              hasFeedback
+            >
+              <Input
+                className="input-box"
+                placeholder="Trạng thái"
+                defaultValue={initialValues.payment_status}
               />
             </Form.Item>
           </Col>

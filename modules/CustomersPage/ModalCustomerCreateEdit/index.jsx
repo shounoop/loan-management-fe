@@ -206,8 +206,8 @@ const ModalCustomerCreateEdit = (props) => {
             placeholder="Chọn trạng thái"
             defaultValue={initialValues.customer_status}
           >
-            <Select.Option value="active">Hoạt động</Select.Option>
-            <Select.Option value="inactive">Không hoạt động</Select.Option>
+            <Select.Option value={1}>Đang hoạt động</Select.Option>
+            <Select.Option value={2}>Không hoạt động</Select.Option>
           </Select>
         </Form.Item>
 
