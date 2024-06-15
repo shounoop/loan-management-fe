@@ -20,15 +20,6 @@ const ModalProductCreateEdit = (props) => {
     handleOkModalCreateEdit(payload);
   };
 
-  const formProps = {
-    // labelCol: { span: 11 },
-    // wrapperCol: { span: 15 },
-  };
-
-  const lastFormItemProps = {
-    // wrapperCol: { offset: 11, span: 15 },
-  };
-
   const isEditModal = !!initialValues.loan_product_id;
 
   return (
@@ -43,7 +34,6 @@ const ModalProductCreateEdit = (props) => {
       <Form
         initialValues={initialValues}
         className="mt-3"
-        {...formProps}
         layout="vertical"
         form={form}
         name="control-hooks"
@@ -267,8 +257,8 @@ const ModalProductCreateEdit = (props) => {
                 placeholder="Chọn trạng thái"
                 defaultValue={initialValues.status}
               >
-                <Select.Option value="active">Hoạt động</Select.Option>
-                <Select.Option value="inactive">Không hoạt động</Select.Option>
+                <Select.Option value={1}>Đang hoạt động</Select.Option>
+                <Select.Option value={2}>Không hoạt động</Select.Option>
               </Select>
             </Form.Item>
           </Col>

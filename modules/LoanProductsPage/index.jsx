@@ -23,7 +23,7 @@ const defaultValues = {
   product_description: 'Product Description 1',
   additional_notes: 'Additional Notes 1',
   late_fee: 0.05,
-  status: 'active',
+  status: 1,
 };
 
 const LoanProductsPage = () => {
@@ -240,8 +240,8 @@ const LoanProductsPage = () => {
       align: 'center',
       ellipsis: true,
       render: (value) => (
-        <Tag color={value === 'active' ? 'success' : 'error'}>
-          {value === 'active' ? 'Hoạt động' : 'Không hoạt động'}
+        <Tag color={value === '1' ? 'success' : 'error'}>
+          {value === '1' ? 'Đang hoạt động' : 'Không hoạt động'}
         </Tag>
       ),
     },
