@@ -4,7 +4,7 @@ import React from 'react';
 const Footer = () => {
 	const { Footer } = Layout;
 
-	return <Footer style={{ textAlign: 'center' }}>Footer</Footer>;
+	return <Footer style={{ textAlign: 'center' }}></Footer>;
 };
 
 export default Footer;
