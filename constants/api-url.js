@@ -6,6 +6,7 @@ const API_URL = {
   LOAN_APPLICATION: '/api/express/loan-applications',
   LOGIN: '/api/auth/login',
   LOGOUT: '/api/auth/logout',
+  USER: '/api/auth/users',
 };
 
 export default API_URL;

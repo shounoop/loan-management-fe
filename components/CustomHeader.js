@@ -61,7 +61,7 @@ const CustomHeader = ({ collapsed, onToggleCollapse }) => {
           style={{ fontSize: '16px', height: 64 }}
           loading={isSpinning}
         >
-          Logout
+          Đăng xuất
         </Button>
       </Space>
     </div>
