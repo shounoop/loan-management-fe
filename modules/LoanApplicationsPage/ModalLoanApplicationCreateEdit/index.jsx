@@ -43,18 +43,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="loan_product_id"
-              label="loan_product_id"
+              label="Sản phẩm vay"
               rules={[
                 {
                   required: true,
-                  message: 'loan_product_id!',
+                  message: 'Sản phẩm vay không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="loan_product_id"
+                placeholder="Sản phẩm vay"
                 defaultValue={initialValues.loan_product_id}
               />
             </Form.Item>
@@ -63,18 +63,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="customer_id"
-              label="customer_id"
+              label="Khách hàng"
               rules={[
                 {
                   required: true,
-                  message: 'customer_id!',
+                  message: 'Khách hàng không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="customer_id"
+                placeholder="Khách hàng"
                 defaultValue={initialValues.customer_id}
               />
             </Form.Item>
@@ -83,18 +83,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="payment_date"
-              label="payment_date"
+              label="Hạn thanh toán"
               rules={[
                 {
                   required: true,
-                  message: 'payment_date!',
+                  message: 'Hạn thanh toán không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="payment_date"
+                placeholder="Hạn thanh toán"
                 defaultValue={initialValues.payment_date}
               />
             </Form.Item>
@@ -103,18 +103,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="loan_term"
-              label="loan_term"
+              label="Kỳ hạn thanh toán"
               rules={[
                 {
                   required: true,
-                  message: 'loan_term!',
+                  message: 'Kỳ hạn thanh toán không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="loan_term"
+                placeholder="Kỳ hạn thanh toán"
                 defaultValue={initialValues.loan_term}
               />
             </Form.Item>
@@ -123,18 +123,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="principal_amount"
-              label="principal_amount"
+              label="Nợ gốc ban đầu"
               rules={[
                 {
                   required: true,
-                  message: 'principal_amount!',
+                  message: 'Nợ gốc ban đầu không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="principal_amount"
+                placeholder="Nợ gốc ban đầu"
                 defaultValue={initialValues.principal_amount}
               />
             </Form.Item>
@@ -143,18 +143,18 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="remaining_balance"
-              label="remaining_balance"
+              label="Số dư còn lại"
               rules={[
                 {
                   required: true,
-                  message: 'remaining_balance!',
+                  message: 'Số dư còn lại không được để trống!',
                 },
               ]}
               hasFeedback
             >
               <Input
                 className="input-box"
-                placeholder="remaining_balance"
+                placeholder="Số dư còn lại"
                 defaultValue={initialValues.remaining_balance}
               />
             </Form.Item>
