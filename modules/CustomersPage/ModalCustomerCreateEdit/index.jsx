@@ -214,11 +214,17 @@ const ModalCustomerCreateEdit = (props) => {
         <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
           <Row justify="end" gutter={8}>
             <Col>
-              <Button onClick={handleCancelModalCreateEdit}>Hủy</Button>
+              <Button
+                style={{ minWidth: '80px' }}
+                onClick={handleCancelModalCreateEdit}
+              >
+                Hủy
+              </Button>
             </Col>
 
             <Col>
               <Button
+                style={{ minWidth: '80px' }}
                 type="primary"
                 htmlType="submit"
                 loading={isSpinningModalCreateEdit}

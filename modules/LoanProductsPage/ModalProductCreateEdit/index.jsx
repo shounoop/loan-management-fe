@@ -320,7 +320,10 @@ const ModalProductCreateEdit = (props) => {
 
         <Row justify="end" gutter={8}>
           <Col>
-            <Button size="large" onClick={handleCancelModalCreateEdit}>
+            <Button
+              style={{ minWidth: '80px' }}
+              onClick={handleCancelModalCreateEdit}
+            >
               Hủy
             </Button>
           </Col>
@@ -331,6 +334,7 @@ const ModalProductCreateEdit = (props) => {
               type="primary"
               htmlType="submit"
               loading={isSpinningModalCreateEdit}
+              style={{ minWidth: '80px' }}
             >
               {isEditModal ? 'Sửa' : 'Tạo'}
             </Button>
