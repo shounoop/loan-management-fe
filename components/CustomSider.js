@@ -19,6 +19,7 @@ const MenuKeys = {
   LOAN_PRODUCTS: 'loan-products',
   CUSTOMERS: 'customers',
   PRODUCTS: 'products',
+  USERS: 'users',
 };
 
 const CustomSider = () => {
@@ -36,6 +37,12 @@ const CustomSider = () => {
       icon: <BlockOutlined />,
       label: 'Phương Thức Vay',
       path: '/loan-methods',
+    },
+    {
+      key: MenuKeys.CUSTOMERS,
+      icon: <UserOutlined />,
+      label: 'Khách Hàng',
+      path: '/customers',
     },
     {
       key: MenuKeys.LOAN_TYPES,
@@ -56,16 +63,10 @@ const CustomSider = () => {
       path: '/loan-products',
     },
     {
-      key: MenuKeys.CUSTOMERS,
+      key: MenuKeys.USERS,
       icon: <UserOutlined />,
-      label: 'Khách Hàng',
-      path: '/customers',
-    },
-    {
-      icon: <MenuOutlined />,
-      key: MenuKeys.PRODUCTS,
-      label: 'Products',
-      path: '/products',
+      label: 'Người dùng',
+      path: '/users',
     },
   ];
 

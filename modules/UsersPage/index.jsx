@@ -1,9 +1,9 @@
 import HeadingWrapper from '@/components/HeadingWrapper';
 import styles from './Index.module.scss';
-import { Button, Col, Input, Row, Table, Tag } from 'antd';
+import { Button, Col, Input, Row, Table } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
-import ModalCustomerCreateEdit from './ModalCustomerCreateEdit';
+import ModalUserCreateEdit from './ModalUserCreateEdit';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
 import MyToast from '@mdrakibul8001/toastify';
@@ -11,18 +11,13 @@ import MyToast from '@mdrakibul8001/toastify';
 const { Search } = Input;
 
 const defaultValues = {
-  full_name: 'John Wick',
-  date_of_birth: '2003-08-28',
-  gender: 'Male',
-  identity_number: 'ID1234567899',
-  address: 'New York, USA',
-  phone_number: '0936045045',
-  email: 'johnwick@gmail.com',
-  occupation: 'Developer',
-  customer_status: 1,
+  username: 'admin',
+  email: 'admin@gmail.com',
+  role: ['ROLE_ADMIN'],
+  password: '123123',
 };
 
-const CustomersPage = () => {
+const UsersPage = () => {
   const { http } = useAxios();
   const { notify } = MyToast();
 
@@ -32,9 +27,9 @@ const CustomersPage = () => {
   const [isOpenModalConfirmDelete, setIsOpenModalConfirmDelete] =
     useState(false);
   const [isGettingList, setIsGettingList] = useState(false);
-  const [customers, setCustomers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [initialValues, setInitialValues] = useState(defaultValues);
-  const [deleteCustomerId, setDeleteCustomerId] = useState(null);
+  const [deleteUserId, setDeleteUserId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -49,16 +44,16 @@ const CustomersPage = () => {
     try {
       setIsDeleting(true);
 
-      await http.delete(`${API_URL.CUSTOMER}/${deleteCustomerId}`);
+      await http.delete(`${API_URL.USER}/${deleteUserId}`);
+
+      notify('info', 'Xóa đơn vay thành công!');
 
       // Refresh data
       getList();
-
-      notify('info', 'Xóa khách hàng thành công!');
     } catch (error) {
       console.error(error);
 
-      notify('error', 'Có lỗi xảy ra!');
+      notify('error', 'Xóa đơn vay thất bại!');
     } finally {
       setIsDeleting(false);
     }
@@ -79,12 +74,12 @@ const CustomersPage = () => {
   const getList = async () => {
     try {
       setIsGettingList(true);
-      const res = await http.get(API_URL.CUSTOMER);
+      const res = await http.get(API_URL.USER);
 
-      const metadata = res?.data?.metadata;
+      const data = res?.data;
 
-      if (metadata) {
-        setCustomers(metadata);
+      if (data) {
+        setUsers(data);
       }
     } catch (error) {
       console.error(error);
@@ -97,19 +92,22 @@ const CustomersPage = () => {
     try {
       setIsSpinningModalCreateEdit(true);
 
-      const customer_id = payload.customer_id;
+      const userId = payload.id;
 
-      if (customer_id) {
-        await http.post(`${API_URL.CUSTOMER}/${customer_id}`, {
+      if (userId) {
+        const editPayload = {
           ...payload,
-          customer_id: undefined,
-        });
+          id: undefined,
+          password: payload.password || undefined,
+        };
 
-        notify('info', 'Cập nhật khách hàng thành công!');
+        await http.put(`${API_URL.USER}/${userId}`, editPayload);
+
+        notify('info', 'Cập nhật đơn vay thành công!');
       } else {
-        await http.post(API_URL.CUSTOMER, payload);
+        await http.post(API_URL.USER, payload);
 
-        notify('info', 'Tạo khách hàng thành công!');
+        notify('info', 'Tạo mới đơn vay thành công!');
       }
 
       // Refresh data
@@ -119,7 +117,7 @@ const CustomersPage = () => {
     } catch (error) {
       console.log(error);
 
-      notify('error', 'Có lỗi xảy ra!');
+      notify('error', 'Tạo mới đơn vay thất bại!');
     } finally {
       setIsSpinningModalCreateEdit(false);
     }
@@ -143,7 +141,7 @@ const CustomersPage = () => {
   };
 
   const onClickDelete = (record) => {
-    setDeleteCustomerId(record.customer_id);
+    setDeleteUserId(record.id);
     openModalDelete();
   };
 
@@ -151,62 +149,23 @@ const CustomersPage = () => {
     {
       title: 'ID',
       align: 'center',
-      dataIndex: 'customer_id',
-      ellipsis: true,
+      dataIndex: 'id',
       fixed: 'left',
       width: 80,
     },
     {
-      title: 'Tên',
-      dataIndex: 'full_name',
+      title: 'Tên tài khoản',
+      dataIndex: 'username',
       ellipsis: true,
-    },
-    {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      ellipsis: true,
-    },
-    {
-      title: 'Trạn thái',
-      dataIndex: 'customer_status',
-      ellipsis: true,
-      render: (status) => {
-        return (
-          <Tag color={status === 1 ? 'green' : 'red'}>
-            {status === 1 ? 'Đang hoạt động' : 'Không hoạt động'}
-          </Tag>
-        );
-      },
     },
     {
       title: 'Email',
       dataIndex: 'email',
-      width: 200,
       ellipsis: true,
     },
     {
-      title: 'Giới tính',
-      dataIndex: 'gender',
-      ellipsis: true,
-      width: 100,
-      render: (value) => {
-        if (value === 'Male') return 'Nam';
-        return 'Nữ';
-      },
-    },
-    {
-      title: 'Số CMND',
-      dataIndex: 'identity_number',
-      ellipsis: true,
-    },
-    {
-      title: 'Nghề nghiệp',
-      dataIndex: 'occupation',
-      ellipsis: true,
-    },
-    {
-      title: 'SĐT',
-      dataIndex: 'phone_number',
+      title: 'Quyền',
+      dataIndex: 'role',
       ellipsis: true,
     },
     {
@@ -214,7 +173,7 @@ const CustomersPage = () => {
       key: 'action',
       align: 'center',
       fixed: 'right',
-      // width: 180,
+      width: 160,
       render: (_, record) => (
         <Row align="middle" gutter={8}>
           <Col>
@@ -236,7 +195,7 @@ const CustomersPage = () => {
   return (
     <div className={styles.wrapper}>
       <HeadingWrapper
-        title="Quản lý khách hàng"
+        title="Quản lý người dùng"
         onClickCreate={openModalCreate}
       />
 
@@ -253,18 +212,18 @@ const CustomersPage = () => {
 
       <div className={styles.table_wrapper}>
         <Table
-          dataSource={customers}
+          dataSource={users}
           columns={columns}
           loading={isGettingList}
-          pagination={customers.length > 7 ? { pageSize: 7 } : false}
-          scroll={{ x: 1500 }}
-          rowKey={(record) => record.customer_id}
+          pagination={users.length > 7 ? { pageSize: 7 } : false}
+          // scroll={{ x: 2200 }}
+          rowKey={(record) => record.id}
         />
       </div>
 
       <>
         {isOpenModalCreateEdit && (
-          <ModalCustomerCreateEdit
+          <ModalUserCreateEdit
             initialValues={initialValues}
             isOpenModalCreateEdit={isOpenModalCreateEdit}
             handleOkModalCreateEdit={handleOkModalCreateEdit}
@@ -279,7 +238,7 @@ const CustomersPage = () => {
             title="Xác Nhận Xoá"
             handleOkModalDelete={handleOkModalDelete}
             handleCancelModalDelete={handleCancelModalDelete}
-            content="Bạn có chắc chắn muốn xóa khách hàng này?"
+            content="Bạn có chắc chắn muốn xóa đơn vay này?"
             isDeleting={isDeleting}
           />
         )}
@@ -288,4 +247,4 @@ const CustomersPage = () => {
   );
 };
 
-export default CustomersPage;
+export default UsersPage;

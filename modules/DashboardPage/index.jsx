@@ -17,10 +17,10 @@ const DashboardPage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Trang chủ</h1>
+      <h1>Dashboard</h1>
 
       <Button type="primary" onClick={onClick}>
-        Click me to test the API
+        Click me to test API
       </Button>
     </div>
   );

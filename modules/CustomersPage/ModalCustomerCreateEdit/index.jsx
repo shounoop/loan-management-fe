@@ -206,19 +206,25 @@ const ModalCustomerCreateEdit = (props) => {
             placeholder="Chọn trạng thái"
             defaultValue={initialValues.customer_status}
           >
-            <Select.Option value="active">Hoạt động</Select.Option>
-            <Select.Option value="inactive">Không hoạt động</Select.Option>
+            <Select.Option value={1}>Đang hoạt động</Select.Option>
+            <Select.Option value={2}>Không hoạt động</Select.Option>
           </Select>
         </Form.Item>
 
         <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
           <Row justify="end" gutter={8}>
             <Col>
-              <Button onClick={handleCancelModalCreateEdit}>Hủy</Button>
+              <Button
+                style={{ minWidth: '80px' }}
+                onClick={handleCancelModalCreateEdit}
+              >
+                Hủy
+              </Button>
             </Col>
 
             <Col>
               <Button
+                style={{ minWidth: '80px' }}
                 type="primary"
                 htmlType="submit"
                 loading={isSpinningModalCreateEdit}

@@ -131,7 +131,12 @@ const ModalLoanTypeCreateEdit = (props) => {
         <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
           <Row justify="end" gutter={8}>
             <Col>
-              <Button onClick={handleCancelModalCreateEdit}>Hủy</Button>
+              <Button
+                style={{ minWidth: '80px' }}
+                onClick={handleCancelModalCreateEdit}
+              >
+                Hủy
+              </Button>
             </Col>
 
             <Col>
@@ -139,6 +144,7 @@ const ModalLoanTypeCreateEdit = (props) => {
                 type="primary"
                 htmlType="submit"
                 loading={isSpinningModalCreateEdit}
+                style={{ minWidth: '80px' }}
               >
                 {isEditModal ? 'Sửa' : 'Tạo'}
               </Button>
