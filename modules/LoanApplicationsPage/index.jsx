@@ -8,6 +8,10 @@ import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 import API_URL from '@/constants/api-url';
 import MyToast from '@mdrakibul8001/toastify';
 import { convertISOToDDMMYYYY } from '@/utils/format-date';
+import {
+  getLoanApplicationStatusColor,
+  getLoanApplicationStatusText,
+} from '@/utils/common';
 
 const { Search } = Input;
 
@@ -174,6 +178,17 @@ const LoanApplicationsPage = () => {
       title: 'Tên sản phẩm vay',
       dataIndex: 'loan_product_name',
       ellipsis: true,
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'payment_status',
+      ellipsis: true,
+      render: (value) => {
+        const color = getLoanApplicationStatusColor(value);
+        const text = getLoanApplicationStatusText(value);
+
+        return <Tag color={color}>{text}</Tag>;
+      },
     },
     {
       title: 'Số dư còn lại',
