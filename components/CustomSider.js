@@ -73,7 +73,7 @@ const CustomSider = () => {
       key: MenuKeys.ACTIVITIES,
       icon: <NotificationOutlined />,
       label: 'Hoạt động',
-      path: '/user-activity',
+      path: '/user-activities',
     },
   ];
 
