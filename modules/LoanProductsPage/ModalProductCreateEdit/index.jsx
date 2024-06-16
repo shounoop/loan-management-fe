@@ -183,7 +183,7 @@ const ModalProductCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="repayment_schedule"
-              label="Chu kỳ trả nợ"
+              label="Kỳ hạn thanh toán"
               rules={[
                 {
                   required: true,
