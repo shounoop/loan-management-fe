@@ -122,7 +122,7 @@ const ModalLoanTypeCreateEdit = (props) => {
           hasFeedback
         >
           <Input.TextArea
-            rows={4}
+            rows={7}
             className="input-box"
             placeholder="Nhập mô tả mục đích vay"
           />

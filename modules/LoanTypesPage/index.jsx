@@ -150,11 +150,26 @@ const LoanTypesPage = () => {
       dataIndex: 'loan_type_desc',
     },
     {
+      title: 'Lãi suất',
+      dataIndex: 'interest_rate',
+      width: 90,
+    },
+    {
+      title: 'Phí phạt nộp trễ hạn',
+      dataIndex: 'late_interest_fee',
+      width: 170,
+    },
+    {
+      title: 'Phí phạt trả trước',
+      dataIndex: 'prepay_interest_fee',
+      width: 160,
+    },
+    {
       title: 'Hành động',
       key: 'action',
-      width: 180,
+      align: 'center',
       render: (_, record) => (
-        <Row align="middle" gutter={8}>
+        <Row align="middle" gutter={8} wrap={false}>
           <Col>
             <Button type="default" onClick={() => onClickEdit(record)}>
               Sửa

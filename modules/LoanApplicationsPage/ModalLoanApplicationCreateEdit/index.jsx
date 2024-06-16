@@ -103,7 +103,7 @@ const ModalLoanApplicationCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="loan_term"
-              label="Kỳ hạn thanh toán"
+              label="Kỳ hạn thanh toán (tháng)"
               rules={[
                 {
                   required: true,
