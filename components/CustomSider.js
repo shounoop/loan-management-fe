@@ -51,16 +51,16 @@ const CustomSider = () => {
       path: '/loan-types',
     },
     {
-      key: MenuKeys.LOAN_APPLICATIONS,
-      icon: <IdcardOutlined />,
-      label: 'Đơn Vay',
-      path: '/loan-applications',
-    },
-    {
       key: MenuKeys.LOAN_PRODUCTS,
       icon: <FileProtectOutlined />,
       label: 'Sản Phẩm Vay',
       path: '/loan-products',
+    },
+    {
+      key: MenuKeys.LOAN_APPLICATIONS,
+      icon: <IdcardOutlined />,
+      label: 'Đơn Vay',
+      path: '/loan-applications',
     },
     {
       key: MenuKeys.USERS,

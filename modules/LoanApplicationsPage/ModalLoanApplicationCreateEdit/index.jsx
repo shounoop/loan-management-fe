@@ -160,25 +160,27 @@ const ModalLoanApplicationCreateEdit = (props) => {
             </Form.Item>
           </Col>
 
-          <Col span={12}>
-            <Form.Item
-              name="payment_status"
-              label="Trạng thái"
-              rules={[
-                {
-                  required: true,
-                  message: 'Trạng thái không được để trống!',
-                },
-              ]}
-              hasFeedback
-            >
-              <Input
-                className="input-box"
-                placeholder="Trạng thái"
-                defaultValue={initialValues.payment_status}
-              />
-            </Form.Item>
-          </Col>
+          {isEditModal && (
+            <Col span={12}>
+              <Form.Item
+                name="payment_status"
+                label="Trạng thái"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Trạng thái không được để trống!',
+                  },
+                ]}
+                hasFeedback
+              >
+                <Input
+                  className="input-box"
+                  placeholder="Trạng thái"
+                  defaultValue={initialValues.payment_status}
+                />
+              </Form.Item>
+            </Col>
+          )}
         </Row>
 
         <Row justify="end" gutter={8}>

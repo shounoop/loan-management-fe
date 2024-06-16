@@ -16,7 +16,7 @@ import {
 const { Search } = Input;
 
 const defaultValues = {
-  loan_product_id: 2,
+  loan_product_id: 1,
   customer_id: 1,
   payment_date: '01/01/2024',
   loan_term: 1,

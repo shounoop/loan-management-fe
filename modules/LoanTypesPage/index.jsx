@@ -143,6 +143,7 @@ const LoanTypesPage = () => {
     {
       title: 'Mục đích vay',
       dataIndex: 'loan_type_name',
+      width: 150,
     },
     {
       title: 'Mô tả',
