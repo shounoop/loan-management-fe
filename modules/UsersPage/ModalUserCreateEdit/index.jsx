@@ -1,5 +1,4 @@
-import { Button, Col, Form, Input, Modal, Row } from 'antd';
-import { useState } from 'react';
+import { Button, Col, Form, Input, Modal, Row, Select } from 'antd';
 
 const ModalUserCreateEdit = (props) => {
   const {
@@ -93,20 +92,22 @@ const ModalUserCreateEdit = (props) => {
               ]}
               hasFeedback
             >
-              <Input
+              <Select
                 className="input-box"
-                placeholder="Quyền"
-                defaultValue={initialValues.loan_product_id}
-              />
+                placeholder="Chọn quyền"
+                defaultValue={initialValues.role}
+                mode="multiple"
+                style={{ width: '100%' }}
+              >
+                <Select.Option value="SUPER_ADMIN">SUPER_ADMIN</Select.Option>
+
+                <Select.Option value="ADMIN">ADMIN</Select.Option>
+              </Select>
             </Form.Item>
           </Col>
 
           <Col span={12}>
-            <Form.Item
-              name="password"
-              label="Mật khẩu"
-              hasFeedback
-            >
+            <Form.Item name="password" label="Mật khẩu" hasFeedback>
               <Input.Password
                 className="input-box"
                 placeholder="Mật khẩu"

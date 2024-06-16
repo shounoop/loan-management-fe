@@ -1,11 +1,11 @@
 import styles from './Index.module.scss';
 
-const DashboardPage = () => {
+const UserActivityPage = () => {
   return (
     <div className={styles.wrapper}>
-      <h1>Dashboard Page</h1>
+      <h1>User Activity Page</h1>
     </div>
   );
 };
 
-export default DashboardPage;
+export default UserActivityPage;

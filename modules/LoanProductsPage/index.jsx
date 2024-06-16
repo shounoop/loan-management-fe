@@ -226,7 +226,7 @@ const LoanProductsPage = () => {
       ellipsis: true,
     },
     {
-      title: 'Lịch trả nợ',
+      title: 'Kỳ hạn thanh toán',
       dataIndex: 'repayment_schedule',
       ellipsis: true,
       render: getRepaymentScheduleText,

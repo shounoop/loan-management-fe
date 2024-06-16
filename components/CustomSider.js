@@ -2,12 +2,12 @@ import React from 'react';
 import { Menu } from 'antd';
 import {
   HomeOutlined,
-  MenuOutlined,
   BlockOutlined,
   AimOutlined,
   IdcardOutlined,
   FileProtectOutlined,
   UserOutlined,
+  NotificationOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
 
@@ -20,6 +20,7 @@ const MenuKeys = {
   CUSTOMERS: 'customers',
   PRODUCTS: 'products',
   USERS: 'users',
+  ACTIVITIES: 'activities',
 };
 
 const CustomSider = () => {
@@ -39,22 +40,10 @@ const CustomSider = () => {
       path: '/loan-methods',
     },
     {
-      key: MenuKeys.CUSTOMERS,
-      icon: <UserOutlined />,
-      label: 'Khách Hàng',
-      path: '/customers',
-    },
-    {
       key: MenuKeys.LOAN_TYPES,
       icon: <AimOutlined />,
       label: 'Mục Đích Vay',
       path: '/loan-types',
-    },
-    {
-      key: MenuKeys.LOAN_APPLICATIONS,
-      icon: <IdcardOutlined />,
-      label: 'Đơn Vay',
-      path: '/loan-applications',
     },
     {
       key: MenuKeys.LOAN_PRODUCTS,
@@ -63,10 +52,28 @@ const CustomSider = () => {
       path: '/loan-products',
     },
     {
+      key: MenuKeys.CUSTOMERS,
+      icon: <UserOutlined />,
+      label: 'Khách Hàng',
+      path: '/customers',
+    },
+    {
+      key: MenuKeys.LOAN_APPLICATIONS,
+      icon: <IdcardOutlined />,
+      label: 'Đơn Vay',
+      path: '/loan-applications',
+    },
+    {
       key: MenuKeys.USERS,
       icon: <UserOutlined />,
       label: 'Người dùng',
       path: '/users',
+    },
+    {
+      key: MenuKeys.ACTIVITIES,
+      icon: <NotificationOutlined />,
+      label: 'Hoạt động',
+      path: '/user-activities',
     },
   ];
 

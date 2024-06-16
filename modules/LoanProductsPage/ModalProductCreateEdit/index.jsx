@@ -1,4 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row, Select } from 'antd';
+import { useEffect, useState } from 'react';
+import API_URL from '@/constants/api-url';
+import useAxios from '@/utils/axios';
 
 const ModalProductCreateEdit = (props) => {
   const {
@@ -8,8 +11,42 @@ const ModalProductCreateEdit = (props) => {
     isSpinningModalCreateEdit,
     handleCancelModalCreateEdit,
   } = props;
+  const { http } = useAxios();
+
+  const [loanMethods, setLoanMethods] = useState([]);
+  const [loanTypes, setLoanTypes] = useState([]);
 
   const [form] = Form.useForm();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await http.get(API_URL.LOAN_METHOD);
+
+        const data = res?.data?.infor?.data;
+
+        if (data) {
+          setLoanMethods(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+
+    (async () => {
+      try {
+        const res = await http.get(API_URL.LOAN_TYPE);
+
+        const data = res?.data?.infor?.data;
+
+        if (data) {
+          setLoanTypes(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, []);
 
   const onFinish = (values) => {
     const payload = {
@@ -72,11 +109,20 @@ const ModalProductCreateEdit = (props) => {
               ]}
               hasFeedback
             >
-              <Input
+              <Select
                 className="input-box"
-                placeholder="Nhập phương thức vay"
+                placeholder="Phương thức vay"
                 defaultValue={initialValues.loan_method_id}
-              />
+              >
+                {loanMethods.map((item) => (
+                  <Select.Option
+                    key={item.loan_method_id}
+                    value={item.loan_method_id}
+                  >
+                    {item.loan_method_name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
 
@@ -92,11 +138,20 @@ const ModalProductCreateEdit = (props) => {
               ]}
               hasFeedback
             >
-              <Input
+              <Select
                 className="input-box"
-                placeholder="Nhập mục đích vay"
+                placeholder="Mục đích vay"
                 defaultValue={initialValues.loan_type_id}
-              />
+              >
+                {loanTypes.map((item) => (
+                  <Select.Option
+                    key={item.loan_type_id}
+                    value={item.loan_type_id}
+                  >
+                    {item.loan_type_name}
+                  </Select.Option>
+                ))}
+              </Select>
             </Form.Item>
           </Col>
 
@@ -183,7 +238,7 @@ const ModalProductCreateEdit = (props) => {
           <Col span={12}>
             <Form.Item
               name="repayment_schedule"
-              label="Chu kỳ trả nợ"
+              label="Kỳ hạn thanh toán"
               rules={[
                 {
                   required: true,

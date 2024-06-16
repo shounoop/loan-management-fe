@@ -158,6 +158,7 @@ const LoanMethodsPage = () => {
     {
       title: 'Phương thức vay',
       dataIndex: 'loan_method_name',
+      width: 200,
     },
     {
       title: 'Mô tả',
@@ -166,7 +167,8 @@ const LoanMethodsPage = () => {
     {
       title: 'Hành động',
       key: 'action',
-      width: 180,
+      align: 'center',
+      width: 160,
       render: (_, record) => (
         <Row align="middle" gutter={8}>
           <Col>
