@@ -21,15 +21,6 @@ const ModalLoanMethodCreateEdit = (props) => {
     handleOkModalCreateEdit(payload);
   };
 
-  const formProps = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 },
-  };
-
-  const lastFormItemProps = {
-    wrapperCol: { offset: 8, span: 16 },
-  };
-
   const isEditModal = !!initialValues.loan_method_id;
 
   return (
@@ -38,13 +29,14 @@ const ModalLoanMethodCreateEdit = (props) => {
       open={isOpenModalCreateEdit}
       onOk={handleOkModalCreateEdit}
       onCancel={handleCancelModalCreateEdit}
+      width={800}
       footer={null}
     >
       <Form
         initialValues={initialValues}
         className="mt-3"
-        {...formProps}
         form={form}
+        layout="vertical"
         name="control-hooks"
         onFinish={onFinish}
       >
@@ -74,13 +66,13 @@ const ModalLoanMethodCreateEdit = (props) => {
           hasFeedback
         >
           <Input.TextArea
-            rows={4}
+            rows={13}
             className="input-box"
             placeholder="Nhập mô tả phương thức vay"
           />
         </Form.Item>
 
-        <Form.Item {...lastFormItemProps} style={{ marginBottom: 0 }}>
+        <Form.Item style={{ marginBottom: 0 }}>
           <Row justify="end" gutter={8}>
             <Col>
               <Button

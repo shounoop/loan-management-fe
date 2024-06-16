@@ -1,6 +1,6 @@
 import HeadingWrapper from '@/components/HeadingWrapper';
 import styles from './Index.module.scss';
-import { Button, Col, Input, Row, Table } from 'antd';
+import { Button, Col, Input, Row, Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import useAxios from '@/utils/axios';
 import ModalUserCreateEdit from './ModalUserCreateEdit';
@@ -13,7 +13,7 @@ const { Search } = Input;
 const defaultValues = {
   username: 'admin',
   email: 'admin@gmail.com',
-  role: ['ROLE_ADMIN'],
+  role: ['SUPER_ADMIN'],
   password: '123123',
 };
 
@@ -167,6 +167,9 @@ const UsersPage = () => {
       title: 'Quyền',
       dataIndex: 'role',
       ellipsis: true,
+      render: (roles) => {
+        return roles.map((role) => <Tag key={role}>{role}</Tag>);
+      },
     },
     {
       title: 'Hành động',
