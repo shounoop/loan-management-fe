@@ -12,6 +12,7 @@ import {
   getLoanApplicationStatusColor,
   getLoanApplicationStatusText,
 } from '@/utils/common';
+import { useRouter } from 'next/router';
 
 const { Search } = Input;
 
@@ -27,6 +28,8 @@ const defaultValues = {
 const LoanApplicationsPage = () => {
   const { http } = useAxios();
   const { notify } = MyToast();
+
+  const router = useRouter();
 
   const [isOpenModalCreateEdit, setIsOpenModalCreateEdit] = useState(false);
   const [isSpinningModalCreateEdit, setIsSpinningModalCreateEdit] =
@@ -166,6 +169,16 @@ const LoanApplicationsPage = () => {
     openModalDelete();
   };
 
+  const redirectDetailPage = (record) => {
+    const loanApplicationId = record.payment_id;
+
+    if (!loanApplicationId) {
+      return;
+    }
+
+    router.push(`/loan-applications/${loanApplicationId}`);
+  };
+
   const columns = [
     {
       title: 'ID',
@@ -248,9 +261,15 @@ const LoanApplicationsPage = () => {
       key: 'action',
       align: 'center',
       fixed: 'right',
-      width: 160,
+      width: 240,
       render: (_, record) => (
-        <Row align="middle" gutter={8}>
+        <Row align="middle" wrap={false} gutter={8}>
+          <Col>
+            <Button type="primary" onClick={() => redirectDetailPage(record)}>
+              Chi tiết
+            </Button>
+          </Col>
+
           <Col>
             <Button type="default" onClick={() => onClickEdit(record)}>
               Sửa

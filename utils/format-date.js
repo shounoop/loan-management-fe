@@ -1,4 +1,8 @@
 const convertISOToDDMMYYYY = (dateString) => {
+  if (!dateString) {
+    return '';
+  }
+
   // Check if the input is already in dd/mm/yyyy format using regular expression
   const ddmmyyyyRegex = /^\d{2}\/\d{2}\/\d{4}$/;
   if (ddmmyyyyRegex.test(dateString)) {

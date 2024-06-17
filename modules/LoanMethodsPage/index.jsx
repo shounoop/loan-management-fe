@@ -27,8 +27,6 @@ const LoanMethodsPage = () => {
   const [searchKeyword, setSearchKeyword] = useState('');
   const [filteredLoanMethods, setFilteredLoanMethods] = useState(loanMethods);
 
-  console.log({ searchKeyword });
-
   useEffect(() => {
     getList();
   }, []);

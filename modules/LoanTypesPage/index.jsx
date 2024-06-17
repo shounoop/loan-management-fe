@@ -168,6 +168,7 @@ const LoanTypesPage = () => {
       title: 'Hành động',
       key: 'action',
       align: 'center',
+      width: 160,
       render: (_, record) => (
         <Row align="middle" gutter={8} wrap={false}>
           <Col>

@@ -24,6 +24,7 @@ const ModalConfirmDelete = (props) => {
             danger
             loading={isDeleting}
             onClick={handleOkModalDelete}
+            disabled={isDeleting}
           >
             Xóa
           </Button>
