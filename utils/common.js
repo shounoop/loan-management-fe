@@ -49,8 +49,17 @@ const getRepaymentScheduleText = (value) => {
   }
 };
 
+const checkIsSuperAdmin = () => {
+  const localUser =
+    typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+  const user = localUser ? JSON.parse(localUser) : null;
+
+  return user && user?.roles?.includes('SUPER_ADMIN');
+};
+
 export {
   getLoanApplicationStatusColor,
   getLoanApplicationStatusText,
   getRepaymentScheduleText,
+  checkIsSuperAdmin,
 };
