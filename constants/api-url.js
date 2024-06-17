@@ -7,6 +7,9 @@ const API_URL = {
   LOGIN: '/api/auth/login',
   LOGOUT: '/api/auth/logout',
   USER: '/api/auth/users',
+  DOCUMENT: '/api/express/documents',
+  SEND_EMAIL: '/api/express/send-email',
+  GENERATE_PDF: '/api/express/generate-pdf',
 };
 
 export default API_URL;
