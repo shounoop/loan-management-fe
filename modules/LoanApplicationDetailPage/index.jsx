@@ -11,7 +11,8 @@ import {
   getLoanApplicationStatusText,
   getLoanApplicationStatusColor,
 } from '@/utils/common';
-import { Button, Col, Row, Tag } from 'antd';
+import { Button, Col, Row, Tag, Table } from 'antd';
+import ModalConfirmDelete from '@/components/ModalConfirmDelete';
 
 const LoanApplicationDetailPage = () => {
   const { http } = useAxios();
@@ -22,22 +23,205 @@ const LoanApplicationDetailPage = () => {
   const payment_id = router.query.id;
 
   const [loanApplication, setLoanApplication] = useState({});
+  const [documents, setDocuments] = useState([]);
+  const [isGettingList, setIsGettingList] = useState(false);
+  const [isOpenModalConfirmDelete, setIsOpenModalConfirmDelete] =
+    useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [clickedFilename, setClickedFilename] = useState();
+  const [downloading, setDownloading] = useState(false);
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const res = await http.get(`${API_URL.LOAN_APPLICATION}/${payment_id}`);
+    if (payment_id) {
+      (async () => {
+        try {
+          const res = await http.get(
+            `${API_URL.LOAN_APPLICATION}/${payment_id}`
+          );
 
-        const metadata = res?.data?.metadata;
+          const metadata = res?.data?.metadata;
 
-        if (metadata) {
-          setLoanApplication(metadata);
+          if (metadata) {
+            setLoanApplication(metadata);
+          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+      })();
+
+      (async () => {
+        try {
+          setIsGettingList(true);
+          const res = await http.get(`${API_URL.DOCUMENT}/all/${payment_id}`);
+
+          const data = res?.data?.infor?.data;
+
+          if (data) {
+            setDocuments(data);
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsGettingList(false);
+        }
+      })();
+    }
   }, [payment_id]);
+
+  const sendEmail = async () => {
+    const payload = {
+      full_name: 'Trung Kien',
+      method_name: 'Vay tín dụng',
+      payment_date: '20/4/2024',
+      next_term_fee: 2000000,
+      email: 'hoangchinhcva@gmail.com',
+    };
+
+    try {
+      setIsSendingEmail(true);
+      await http.post(API_URL.SEND_EMAIL, payload);
+
+      notify('info', 'Gửi email thành công');
+    } catch (error) {
+      console.error(error);
+
+      notify('error', 'Gửi email thất bại');
+    } finally {
+      setIsSendingEmail(false);
+    }
+  };
+
+  const generatePDF = async () => {
+    const payload = {
+      full_name: 'Tran van tuan',
+      identity_number: '012345678',
+      address: '123 Đường ABC, Phường DEF, Quận GHI, Thành phố JKL',
+      phone_number: '0901234567',
+      email: 'nguyenvana@example.com',
+      principal_amount: 50000000,
+      loan_type_name: 'Vay mua nhà',
+      loan_term: 12,
+      loan_method_name: 'vay lãi suất giảm dần',
+      interest_rate: 0.01,
+    };
+
+    try {
+      setIsGeneratingPDF(true);
+
+      const res = await http.post(API_URL.GENERATE_PDF, payload);
+
+      console.log('res', res);
+    } catch (error) {
+      console.error(error);
+
+      notify('error', 'Tạo PDF thất bại');
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
+  const downloadDocument = async (record) => {
+    try {
+      setDownloading(true);
+
+      const res = await http.get(
+        `${API_URL.DOCUMENT}/${record.document_path}`,
+        {
+          responseType: 'blob',
+        }
+      );
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', record.document_path);
+      document.body.appendChild(link);
+      link.click();
+
+      notify('info', 'Tải về tài liệu thành công');
+    } catch (error) {
+      console.error(error);
+
+      notify('error', 'Tải về tài liệu thất bại');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handleOkModalDelete = async () => {
+    if (!payment_id || !clickedFilename) return;
+
+    try {
+      setIsDeleting(true);
+
+      await http.delete(`${API_URL.DOCUMENT}/${payment_id}/${clickedFilename}`);
+
+      notify('info', 'Xóa tài liệu thành công');
+
+      setDocuments((prev) =>
+        prev.filter((doc) => doc.document_path !== clickedFilename)
+      );
+
+      setIsOpenModalConfirmDelete(false);
+    } catch (error) {
+      console.error(error);
+
+      notify('error', 'Xóa tài liệu thất bại');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleCancelModalDelete = () => {
+    setIsOpenModalConfirmDelete(false);
+  };
+
+  const onClickDelete = (record) => {
+    setIsOpenModalConfirmDelete(true);
+    setClickedFilename(record.document_path);
+  };
+
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'document_id',
+      width: 100,
+    },
+    {
+      title: 'Tài liệu',
+      dataIndex: 'document_path',
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      align: 'center',
+      fixed: 'right',
+      width: 160,
+      render: (_, record) => (
+        <Row align="middle" wrap={false} gutter={8}>
+          <Col>
+            <Button
+              type="primary"
+              onClick={() => downloadDocument(record)}
+              loading={downloading}
+              disabled={downloading}
+            >
+              Tải về
+            </Button>
+          </Col>
+
+          <Col>
+            <Button danger onClick={() => onClickDelete(record)}>
+              Xóa
+            </Button>
+          </Col>
+        </Row>
+      ),
+    },
+  ];
 
   return (
     <div className={styles.wrapper}>
@@ -77,14 +261,26 @@ const LoanApplicationDetailPage = () => {
             </Col>
 
             <Col>
-              {/* button: send email, create pdf */}
               <Row gutter={16}>
                 <Col>
-                  <Button>Gửi email</Button>
+                  <Button
+                    onClick={sendEmail}
+                    loading={isSendingEmail}
+                    disabled={isSendingEmail}
+                  >
+                    Gửi email
+                  </Button>
                 </Col>
 
                 <Col>
-                  <Button type="primary">Tạo PDF</Button>
+                  <Button
+                    onClick={generatePDF}
+                    type="primary"
+                    loading={isGeneratingPDF}
+                    disabled={isGeneratingPDF}
+                  >
+                    Tạo PDF
+                  </Button>
                 </Col>
               </Row>
             </Col>
@@ -151,7 +347,6 @@ const LoanApplicationDetailPage = () => {
           </Row>
         </div>
 
-        {/* below is document list */}
         <div className={styles.documentWrapper}>
           <HeadingWrapper
             title={'Danh sách tài liệu'}
@@ -159,8 +354,31 @@ const LoanApplicationDetailPage = () => {
               console.log('create document');
             }}
           />
+
+          <div className={styles.table_wrapper}>
+            <Table
+              dataSource={documents}
+              columns={columns}
+              loading={isGettingList}
+              pagination={documents.length > 7 ? { pageSize: 7 } : false}
+              rowKey={(record) => record.document_id}
+            />
+          </div>
         </div>
       </div>
+
+      <>
+        {isOpenModalConfirmDelete && (
+          <ModalConfirmDelete
+            open={isOpenModalConfirmDelete}
+            title="Xác Nhận Xoá"
+            handleOkModalDelete={handleOkModalDelete}
+            handleCancelModalDelete={handleCancelModalDelete}
+            content="Bạn có chắc chắn muốn xóa tài liệu này?"
+            isDeleting={isDeleting}
+          />
+        )}
+      </>
     </div>
   );
 };
