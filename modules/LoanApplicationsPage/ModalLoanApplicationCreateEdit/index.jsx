@@ -32,10 +32,14 @@ const ModalLoanApplicationCreateEdit = (props) => {
       try {
         const res = await http.get(API_URL.LOAN_PRODUCT);
 
-        const data = res?.data?.infor?.data;
+        const allLoanApplications = res?.data?.infor?.data;
 
-        if (data) {
-          setLoanProducts(data);
+        const activeLoanApplications = allLoanApplications.filter(
+          (item) => item.status === 1
+        );
+
+        if (activeLoanApplications) {
+          setLoanProducts(activeLoanApplications);
         }
       } catch (error) {
         console.error(error);
@@ -46,10 +50,14 @@ const ModalLoanApplicationCreateEdit = (props) => {
       try {
         const res = await http.get(API_URL.CUSTOMER);
 
-        const metadata = res?.data?.metadata;
+        const allCustomers = res?.data?.metadata;
 
-        if (metadata) {
-          setCustomers(metadata);
+        const activeCustomers = allCustomers.filter((item) => {
+          return item.customer_status === 1;
+        });
+
+        if (activeCustomers) {
+          setCustomers(activeCustomers);
         }
       } catch (error) {
         console.error(error);
