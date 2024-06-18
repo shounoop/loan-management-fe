@@ -14,9 +14,9 @@ const API_URL = {
 };
 
 export const EXPRESS_API_URL = {
-  CUSTOMER: '/api/customers',
-  LOAN_APPLICATION: '/api/payments',
-  LOAN_PRODUCT: '/api/loan-products'
+  CUSTOMER: '/api/express/customers',
+  LOAN_APPLICATION: '/api/express/payments',
+  LOAN_PRODUCT: '/api/express/loan-products'
 }
 
 export default API_URL;
