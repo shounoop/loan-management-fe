@@ -72,11 +72,11 @@ const LoanApplicationDetailPage = () => {
 
   const sendEmail = async () => {
     const payload = {
-      full_name: 'Trung Kien',
-      method_name: 'Vay tín dụng',
-      payment_date: '20/4/2024',
-      next_term_fee: 2000000,
-      email: 'hoangchinhcva@gmail.com',
+      full_name: loanApplication.customer_name,
+      method_name: loanApplication.method_name,
+      payment_date: loanApplication.payment_date,
+      next_term_fee: loanApplication.next_term_fee,
+      email: loanApplication.email,
     };
 
     try {
