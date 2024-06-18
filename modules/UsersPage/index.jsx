@@ -46,14 +46,14 @@ const UsersPage = () => {
 
       await http.delete(`${API_URL.USER}/${deleteUserId}`);
 
-      notify('info', 'Xóa đơn vay thành công!');
+      notify('info', 'Xóa người dùng thành công!');
 
       // Refresh data
       getList();
     } catch (error) {
       console.error(error);
 
-      notify('error', 'Xóa đơn vay thất bại!');
+      notify('error', 'Xóa người dùng thất bại!');
     } finally {
       setIsDeleting(false);
     }
@@ -103,11 +103,11 @@ const UsersPage = () => {
 
         await http.put(`${API_URL.USER}/${userId}`, editPayload);
 
-        notify('info', 'Cập nhật đơn vay thành công!');
+        notify('info', 'Cập nhật người dùng thành công!');
       } else {
         await http.post(API_URL.USER, payload);
 
-        notify('info', 'Tạo mới đơn vay thành công!');
+        notify('info', 'Tạo mới người dùng thành công!');
       }
 
       // Refresh data
@@ -117,7 +117,7 @@ const UsersPage = () => {
     } catch (error) {
       console.log(error);
 
-      notify('error', 'Tạo mới đơn vay thất bại!');
+      notify('error', 'Tạo mới người dùng thất bại!');
     } finally {
       setIsSpinningModalCreateEdit(false);
     }
@@ -241,7 +241,7 @@ const UsersPage = () => {
             title="Xác Nhận Xoá"
             handleOkModalDelete={handleOkModalDelete}
             handleCancelModalDelete={handleCancelModalDelete}
-            content="Bạn có chắc chắn muốn xóa đơn vay này?"
+            content="Bạn có chắc chắn muốn xóa người dùng này?"
             isDeleting={isDeleting}
           />
         )}
