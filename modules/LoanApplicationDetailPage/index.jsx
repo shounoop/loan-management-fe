@@ -11,8 +11,9 @@ import {
   getLoanApplicationStatusText,
   getLoanApplicationStatusColor,
 } from '@/utils/common';
-import { Button, Col, Row, Tag, Table } from 'antd';
+import { Button, Col, Row, Tag, Table, message, Upload } from 'antd';
 import ModalConfirmDelete from '@/components/ModalConfirmDelete';
+import { UploadOutlined } from '@ant-design/icons';
 
 const LoanApplicationDetailPage = () => {
   const { http } = useAxios();
@@ -32,6 +33,37 @@ const LoanApplicationDetailPage = () => {
   const [downloading, setDownloading] = useState(false);
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  const beforeUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('files', file);
+
+    try {
+      await http.post(`${API_URL.DOCUMENT}/${payment_id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      message.success('File uploaded successfully');
+
+      setDocuments((prev) => [
+        ...prev,
+        {
+          document_id: prev.length + 1,
+          document_path: file.name,
+        },
+      ]);
+
+      return true;
+    } catch (error) {
+      console.error(error);
+      message.error('File upload failed');
+    }
+
+    // Prevent default upload behavior
+    return false;
+  };
 
   useEffect(() => {
     if (payment_id) {
@@ -349,10 +381,23 @@ const LoanApplicationDetailPage = () => {
 
         <div className={styles.documentWrapper}>
           <HeadingWrapper
-            title={'Danh sách tài liệu'}
-            onClickCreate={() => {
-              console.log('create document');
-            }}
+            title={
+              <Row justify={'space-between'}>
+                <Col>Danh sách tài liệu</Col>
+
+                <Col>
+                  <Upload
+                    accept="*"
+                    showUploadList={false}
+                    name="file"
+                    beforeUpload={beforeUpload}
+                  >
+                    <Button icon={<UploadOutlined />}>Tải lên tài liệu</Button>
+                  </Upload>
+                </Col>
+              </Row>
+            }
+            titleSpan={24}
           />
 
           <div className={styles.table_wrapper}>
