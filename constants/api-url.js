@@ -13,4 +13,10 @@ const API_URL = {
   GENERATE_PDF: '/api/express/generate-pdf',
 };
 
+export const EXPRESS_API_URL = {
+  CUSTOMER: '/api/express/customers',
+  LOAN_APPLICATION: '/api/express/payments',
+  LOAN_PRODUCT: '/api/express/loan-products'
+}
+
 export default API_URL;
