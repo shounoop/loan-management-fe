@@ -26,7 +26,9 @@ const CustomHeader = ({ collapsed, onToggleCollapse }) => {
       setIsSpinning(false);
       localStorage.clear();
       deleteAllCookies();
-      router.push('/');
+
+      await router.push('/');
+
       router.reload();
       notify('info', 'Đăng xuất thành công!');
     }

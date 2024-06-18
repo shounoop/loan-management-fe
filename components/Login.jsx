@@ -35,6 +35,7 @@ const Login = () => {
         const jwtToken = getCookie(process.env.NEXT_PUBLIC_JWT_COOKIE_NAME);
 
         saveToken(userHere, jwtToken);
+
         router.reload();
 
         notify('success', 'Đăng nhập thành công!');
@@ -82,11 +83,13 @@ const Login = () => {
     <section style={styles.section}>
       <div style={styles.container}>
         <div style={styles.header}>
-          <Title style={styles.title}>Sign in</Title>
+          <Title style={styles.title}>Đăng nhập</Title>
 
           <Text style={styles.text}>
-            Welcome back to AntBlocks UI! Please enter your details below to
-            sign in.
+            {/* Welcome back to AntBlocks UI! Please enter your details below to
+            sign in. */}
+            Chào mừng bạn trở lại! Vui lòng nhập thông tin của bạn bên dưới để
+            đăng nhập.
           </Text>
         </div>
 
@@ -102,65 +105,43 @@ const Login = () => {
             rules={[
               {
                 required: true,
-                message: 'Please input your username!',
+                message: 'Vui lòng nhập tên đăng nhập!',
               },
             ]}
           >
             <Input
               prefix={<UserOutlined />}
-              placeholder="Username"
+              placeholder="Tên đăng nhập"
               onChange={(e) => setUsername(e.target.value)}
             />
           </Form.Item>
 
-          {/* <Form.Item
-						name="email"
-						rules={[
-							{
-								type: 'email',
-								required: true,
-								message: 'Please input your Email!',
-							},
-						]}
-					>
-						<Input
-							prefix={<MailOutlined />}
-							placeholder="Email"
-							onChange={(e) => setEmail(e.target.value)}
-						/>
-					</Form.Item> */}
-
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Please input your Password!' }]}
+            rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
           >
             <Input.Password
               prefix={<LockOutlined />}
               type="password"
-              placeholder="Password"
+              placeholder="Mật khẩu"
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Item>
 
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox>Ghi nhớ</Checkbox>
             </Form.Item>
 
             <a style={styles.forgotPassword} href="">
-              Forgot password?
+              Quên mật khẩu?
             </a>
           </Form.Item>
 
           <Form.Item style={{ marginBottom: '0px' }}>
             <Button block="true" type="primary" htmlType="submit">
-              Log in
+              Đăng nhập
             </Button>
-
-            <div style={styles.footer}>
-              <Text style={styles.text}>Dont have an account?</Text>{' '}
-              <Link href="">Sign up now</Link>
-            </div>
           </Form.Item>
         </Form>
       </div>

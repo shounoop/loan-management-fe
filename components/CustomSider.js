@@ -10,6 +10,7 @@ import {
   NotificationOutlined,
 } from '@ant-design/icons';
 import { useRouter } from 'next/router';
+import { checkIsSuperAdmin } from '@/utils/common';
 
 const MenuKeys = {
   DASHBOARD: 'dashboard',
@@ -25,6 +26,8 @@ const MenuKeys = {
 
 const CustomSider = () => {
   const router = useRouter();
+
+  const isSuperAdmin = checkIsSuperAdmin();
 
   const menuItems = [
     {
@@ -63,19 +66,23 @@ const CustomSider = () => {
       label: 'Đơn Vay',
       path: '/loan-applications',
     },
-    {
+  ];
+
+  if (isSuperAdmin) {
+    menuItems.push({
       key: MenuKeys.USERS,
       icon: <UserOutlined />,
       label: 'Người dùng',
       path: '/users',
-    },
-    {
+    });
+
+    menuItems.push({
       key: MenuKeys.ACTIVITIES,
       icon: <NotificationOutlined />,
       label: 'Hoạt động',
       path: '/user-activities',
-    },
-  ];
+    });
+  }
 
   const renderMenuItem = (item) => {
     if (item.children) {
