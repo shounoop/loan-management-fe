@@ -155,6 +155,8 @@ const LoanApplicationDetailPage = () => {
   };
 
   const downloadDocument = async (record) => {
+    if (downloading) return;
+
     try {
       setDownloading(true);
 
@@ -235,12 +237,7 @@ const LoanApplicationDetailPage = () => {
       render: (_, record) => (
         <Row align="middle" wrap={false} gutter={8}>
           <Col>
-            <Button
-              type="primary"
-              onClick={() => downloadDocument(record)}
-              loading={downloading}
-              disabled={downloading}
-            >
+            <Button type="primary" onClick={() => downloadDocument(record)}>
               Tải về
             </Button>
           </Col>

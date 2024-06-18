@@ -214,7 +214,7 @@ const DashboardPage = () => {
         .catch((err) => {
           console.log(err);
         });
-      setTotalCustomerOfToday(response.metadata);
+      setTotalCustomerOfToday(response.metadata || 0);
     } catch (err) {
       console.log(err);
     }
@@ -291,7 +291,7 @@ const DashboardPage = () => {
         .catch((err) => {
           console.log(err);
         });
-      setTotalLoanApplicationsOfToday(response.metadata);
+      setTotalLoanApplicationsOfToday(response.metadata || 0);
     } catch (err) {
       console.log(err);
     }
@@ -478,19 +478,13 @@ const DashboardPage = () => {
                 </div>
               </Card>
 
-              <Card
-                title="Bán chạy nhất trong năm 2024"
-                size="default"
-              >
+              <Card title="Bán chạy nhất trong năm 2024" size="default">
                 <div className={`${styles.total_text}`}>
                   {mostSoldLoanProduct}
                 </div>
               </Card>
 
-              <Card
-                title="Bán chạy nhất trong tháng"
-                size="default"
-              >
+              <Card title="Bán chạy nhất trong tháng" size="default">
                 <div className={`${styles.total_text}`}>
                   {mostSoldLoanProductOfOneMonthInAYear}
                 </div>
